@@ -3,12 +3,11 @@ import { defineStore } from 'pinia'
 
 export const useAuthStore = defineStore('auth', {
   state: () => ({
-    token: null,
+    token: null as string | null,
   }),
 
   actions: {
     setToken(token: string) {
-      // @ts-ignore
       this.token = token
     },
 

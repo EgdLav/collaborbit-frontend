@@ -1,4 +1,52 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { onMounted, ref } from 'vue'
+import { $fetch } from '@/fetch/fetch.ts'
+import { useRouter } from 'vue-router'
+import { useAuthStore } from '@/stores/authStore.ts'
+
+const router = useRouter()
+const auth = useAuthStore()
+
+async function submit(event: Event) {
+  document.querySelectorAll('.error').forEach((e) => e.remove())
+
+  const form = event.target as HTMLFormElement
+  const response = await $fetch('/register', 'post', new FormData(form))
+
+  if (response.error) {
+    for (const name in response.data.errors) {
+      const input = document.querySelector(`[name="${name}"]`) as HTMLInputElement | null
+      if (input) {
+        input.setCustomValidity(response.data.errors[name])
+        input.insertAdjacentHTML(
+          'afterend',
+          `<span class="error mt-2">${response.data.errors[name]}</span>`,
+        )
+      }
+    }
+  } else {
+    auth.setToken(response.token)
+    await router.push('/')
+  }
+}
+
+const avatar = ref<File | null>(null)
+const preview = ref<string | null>(null)
+
+function onAvatarChange(event: Event) {
+  const input = event.target as HTMLInputElement
+  const file = input.files?.[0]
+
+  if (!file) return
+
+  avatar.value = file
+  preview.value = URL.createObjectURL(file)
+}
+
+onMounted(() =>
+  document.querySelectorAll('input').forEach((e) => (e.onchange = () => e.setCustomValidity(''))),
+)
+</script>
 
 <template>
   <main
@@ -6,28 +54,33 @@
   >
     <section class="w-full max-w-md">
       <div class="card p-4 sm:p-6">
-        <p class="prompt">
-          <b>auth</b> / register <span class="text-[color:var(--text-2)]">—</span>
-          <span class="kbd">POST /users</span>
-        </p>
         <h1 class="text-lg font-semibold">Create account</h1>
-        <p class="mt-1 text-sm text-[color:var(--text-1)]">
-          Начните с базового профиля. Дальше можно донастроить.
-        </p>
-
-        <form class="mt-6 space-y-4" action="#" method="post">
+        <form class="mt-6 space-y-4" method="post" @submit.prevent="submit">
           <div>
-            <label class="mb-2 block text-sm text-[color:var(--text-1)]" for="name">Name</label>
+            <label class="mb-2 block text-sm text-[color:var(--text-1)]" for="name"
+              >First name</label
+            >
             <input
               class="input"
               id="name"
-              name="name"
+              name="first_name"
               type="text"
               autocomplete="name"
-              placeholder="Egor"
+              placeholder="Ivan"
             />
-            <!-- Error UI -->
-            <p class="error mt-2">Имя слишком короткое (минимум 2 символа).</p>
+          </div>
+          <div>
+            <label class="mb-2 block text-sm text-[color:var(--text-1)]" for="name"
+              >Last name</label
+            >
+            <input
+              class="input"
+              id="name"
+              name="last_name"
+              type="text"
+              autocomplete="name"
+              placeholder="Ivanov"
+            />
           </div>
 
           <div>
@@ -40,7 +93,6 @@
               autocomplete="email"
               placeholder="you@studio.dev"
             />
-            <p class="help mt-2">Мы не показываем email публично.</p>
           </div>
 
           <div>
@@ -53,9 +105,28 @@
               name="password"
               type="password"
               autocomplete="new-password"
-              placeholder="минимум 8 символов"
+              placeholder="8 chars minimum"
             />
-            <p class="help mt-2">Лучше: passphrase + менеджер паролей.</p>
+          </div>
+          <div>
+            <label class="mb-2 block text-sm text-[color:var(--text-1)]" for="avatar">Avatar</label>
+            <div class="flex flex-col gap-3">
+              <input
+                class="input"
+                id="avatar"
+                name="avatar"
+                type="file"
+                accept="image/*"
+                @change="onAvatarChange"
+              />
+              <div v-if="preview" class="flex justify-center">
+                <img
+                  :src="preview"
+                  alt="Avatar preview"
+                  class="h-24 w-24 rounded-full object-cover"
+                />
+              </div>
+            </div>
           </div>
 
           <div class="flex items-start gap-2">
@@ -80,7 +151,7 @@
 
       <p class="mt-4 text-center text-sm text-[color:var(--text-2)]">
         Уже есть аккаунт?
-        <a class="link" href="./login.html">Войти</a>
+        <router-link class="link" to="/login">Войти</router-link>
       </p>
     </section>
   </main>

@@ -1,20 +1,21 @@
 <script setup lang="ts">
 import { onMounted } from 'vue'
-import { $fetch } from '@/fetch/fetch.js'
+import { $fetch } from '@/fetch/fetch.ts'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '@/stores/authStore.ts'
 
 const router = useRouter()
 const auth = useAuthStore()
 
-async function submit(event) {
+async function submit(event: Event) {
   document.querySelectorAll('.error').forEach((e) => e.remove())
 
-  const response = await $fetch('/login', 'post', new FormData(event.target))
+  const form = event.target as HTMLFormElement
+  const response = await $fetch('/login', 'post', new FormData(form))
 
   if (response.error) {
     for (const name in response.data.errors) {
-      const input = document.querySelector(`[name=${name}]`)
+      const input = document.querySelector(`[name="${name}"]`) as HTMLInputElement | null
       if (input) {
         input.setCustomValidity(response.data.errors[name])
         input.insertAdjacentHTML(
@@ -26,7 +27,7 @@ async function submit(event) {
   } else {
     auth.setToken(response.token)
     await router.push('/')
-  } // TODO: make notify function
+  }
 }
 
 onMounted(() =>
