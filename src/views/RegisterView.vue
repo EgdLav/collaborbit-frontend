@@ -1,11 +1,9 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
 import { $fetch } from '@/fetch/fetch.ts'
-import { useRouter } from 'vue-router'
-import { useAuthStore } from '@/stores/authStore.ts'
+import { notify } from '@/services/notify.ts'
 
-const router = useRouter()
-const auth = useAuthStore()
+const sent = ref(false)
 
 async function submit(event: Event) {
   document.querySelectorAll('.error').forEach((e) => e.remove())
@@ -25,8 +23,7 @@ async function submit(event: Event) {
       }
     }
   } else {
-    auth.setToken(response.token)
-    await router.push('/')
+    notify(response.message, 'success')
   }
 }
 
@@ -146,6 +143,7 @@ onMounted(() =>
           <div class="pt-1">
             <button class="btn btn-primary w-full" type="submit">Register</button>
           </div>
+<!--          <p class="help mt-2" v-if="sent">Confirmation link sent to your email. Check it</p>-->
         </form>
       </div>
 

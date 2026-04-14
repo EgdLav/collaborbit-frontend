@@ -4,11 +4,7 @@ import { notify } from '@/services/notify.ts'
 async function handleResponse(response: Response) {
   if (response.status >= 200 && response.status < 400) {
     try {
-      const data = await response.json()
-
-      if (data.data) return data.data
-
-      return data
+      return await response.json()
     } catch (err) {
       return true
     }

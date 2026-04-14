@@ -25,7 +25,7 @@ async function submit(event: Event) {
       }
     }
   } else {
-    auth.setToken(response.token)
+    auth.setToken(response.data.token)
     await router.push('/')
   }
 }

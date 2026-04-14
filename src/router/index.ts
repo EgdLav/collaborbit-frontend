@@ -16,6 +16,10 @@ export const router = createRouter({
       component: () => import('@/views/RegisterView.vue'),
     },
     {
+      path: '/verify-email',
+      component: () => import('@/views/VerifyEmail.vue'),
+    },
+    {
       path: '/chat',
       component: () => import('@/views/ChatView.vue'),
     },
