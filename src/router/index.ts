@@ -17,7 +17,31 @@ export const router = createRouter({
     },
     {
       path: '/verify-email',
-      component: () => import('@/views/VerifyEmail.vue'),
+      component: () => import('@/views/VerifyEmailView.vue'),
+    },
+    {
+      path: '/find-coworkers',
+      component: () => import('@/views/CoworkersFindView.vue'),
+    },
+    {
+      path: '/workspace-create',
+      component: () => import('@/views/WorkspaceCreate.vue'),
+    },
+    {
+      path: '/workspace/:id',
+      component: () => import('@/views/WorkspaceView.vue'),
+    },
+    {
+      path: '/workspaces',
+      component: () => import('@/views/WorkspacesView.vue'),
+    },
+    {
+      path: '/workspace-settings/:id',
+      component: () => import('@/views/WorkspaceSettings.vue'),
+    },
+    {
+      path: '/invites',
+      component: () => import('@/views/Invites.vue'),
     },
     {
       path: '/chat',

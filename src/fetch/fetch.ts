@@ -1,5 +1,7 @@
 import { useAuthStore } from '../stores/authStore.ts'
 import { notify } from '@/services/notify.ts'
+import { router } from '@/router'
+
 
 async function handleResponse(response: Response) {
   if (response.status >= 200 && response.status < 400) {
@@ -12,9 +14,9 @@ async function handleResponse(response: Response) {
     const data = await response.json()
     const message = []
 
-    if (data?.message)
+    if (data?.message) {
       notify(data?.message, 'error')
-
+    }
     return { data, error: true }
   } else {
     alert('Server error')

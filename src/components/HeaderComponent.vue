@@ -1,4 +1,18 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { useAuthStore } from '@/stores/authStore.ts'
+import { computed } from 'vue'
+import { $fetch } from '@/fetch/fetch.ts'
+import { useRoute } from 'vue-router'
+
+const auth = useAuthStore()
+const token = computed(() => auth.token)
+const route = useRoute()
+
+async function logout() {
+  await $fetch('/logout', 'post')
+  auth.logout()
+}
+</script>
 
 <template>
   <header class="navbar">
@@ -25,8 +39,25 @@
         </nav>
 
         <div class="flex items-center gap-2">
-          <a class="btn btn-ghost" href="./login">Login</a>
-          <a class="btn btn-primary" href="./register">Register</a>
+          <router-link
+            v-if="!token"
+            class="btn"
+            :class="route.path == '/login' ? 'btn-primary' : 'btn-ghost'"
+            to="/login"
+            >Login</router-link>
+          <router-link
+            v-if="!token"
+            class="btn"
+            :class="route.path == '/register' ? 'btn-primary' : 'btn-ghost'"
+            to="/register"
+            >Register</router-link>
+          <router-link
+            v-if="token"
+            class="btn"
+            :class="route.path == '/find-coworkers' ? 'btn-primary' : 'btn-ghost'"
+            to="/find-coworkers"
+            >Find coworkers</router-link>
+          <button v-if="token" class="btn btn-danger" @click="logout">Logout</button>
         </div>
       </div>
     </div>
