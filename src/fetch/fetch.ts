@@ -17,7 +17,7 @@ async function handleResponse(response: Response) {
     if (data?.message) {
       notify(data?.message, 'error')
     }
-    return { data, error: true }
+    return { data, error: true, status:response.status }
   } else {
     alert('Server error')
   }

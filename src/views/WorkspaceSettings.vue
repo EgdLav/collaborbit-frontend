@@ -1,20 +1,49 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import { $fetch } from '@/fetch/fetch.ts'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
+import { notify } from '@/services/notify.ts'
 
-const workspace = ref(null)
+const workspace = ref({
+  name: '',
+  slug: '',
+  description: '',
+})
 const route = useRoute()
+const router = useRouter()
 const showModal = ref(false)
 
+async function back() {
+  if (document.referrer) {
+    router.back()
+  } else {
+    await router.push('/workspaces') // fallback page
+  }
+}
 async function getWorkspace() {
   const response = await $fetch(`/workspaces/${route.params.id}`, 'get')
-  workspace.value = response.data
+  if (response.status == 403 || !response.data?.workspace.is_owner) {
+    await back()
+  }
+  workspace.value = response.data.workspace
 }
 async function save(event: Event) {
   const form = event?.target as HTMLFormElement
   const response = await $fetch(`/workspaces/${route.params.id}`, 'post', new FormData(form))
-  workspace.value = response.data
+  workspace.value = response.data.workspace
+  if (!response.error) {
+    notify(response.message, 'success')
+    await back()
+  }
+}
+async function del() {
+  const response = await $fetch(`/workspaces/${route.params.id}`, 'delete')
+  if (!response.error) {
+    console.log(response)
+    notify(response.message, 'success')
+    await back()
+  }
+  await back()
 }
 
 getWorkspace()
@@ -30,24 +59,27 @@ getWorkspace()
       </p>
     </section>
     <form action="#" @submit.prevent="save">
+      <input class="input" type="hidden" name="_method" value="patch" />
       <section class="mt-4 space-y-4">
         <article class="card p-4">
           <h2 class="text-sm font-semibold">General</h2>
           <div class="mt-3 grid grid-cols-1 gap-3 sm:grid-cols-2">
             <label class="block">
               <span class="mb-1.5 block text-sm text-[color:var(--text-1)]">Workspace name</span>
-              <input class="input" type="text" value="Orbit Product Team" />
+              <input class="input" type="text" name="name" v-model="workspace.name" />
             </label>
             <label class="block">
               <span class="mb-1.5 block text-sm text-[color:var(--text-1)]">Slug</span>
-              <input class="input" type="text" value="orbit-product" />
+              <input class="input" type="text" v-model="workspace.slug" name="slug" />
             </label>
           </div>
           <label class="mt-3 block">
             <span class="mb-1.5 block text-sm text-[color:var(--text-1)]">Description</span>
-            <textarea class="input min-h-[100px] resize-y">
-Roadmap, release management and weekly execution.</textarea
-            >
+            <textarea
+              class="input min-h-[100px] resize-y"
+              name="description"
+              v-model="workspace.description"
+            ></textarea>
           </label>
         </article>
 
@@ -66,6 +98,9 @@ Roadmap, release management and weekly execution.</textarea
               @click="showModal = true"
             >
               Delete workspace
+            </button>
+            <button class="btn btn-ghost h-9 px-3 py-0 text-sm" type="button" @click="back">
+              Exit without changes
             </button>
           </div>
         </article>
@@ -90,7 +125,9 @@ Roadmap, release management and weekly execution.</textarea
                 <button class="btn h-9 px-3 py-0 text-sm" @click="showModal = false" type="button">
                   Cancel
                 </button>
-                <button class="btn btn-danger h-9 px-3 py-0 text-sm" type="button">Delete</button>
+                <button class="btn btn-danger h-9 px-3 py-0 text-sm" type="button" @click="del">
+                  Delete
+                </button>
               </div>
             </div>
           </div>
