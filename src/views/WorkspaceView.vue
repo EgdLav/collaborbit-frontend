@@ -1,4 +1,54 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { computed, ref } from 'vue'
+import { $fetch } from '@/fetch/fetch.ts'
+import { useRoute, useRouter } from 'vue-router'
+import { notify } from '@/services/notify.ts'
+
+const workspace = ref({
+  name: '',
+  slug: '',
+  description: '',
+  members: [],
+})
+const route = useRoute()
+const router = useRouter()
+const showModal = ref(false)
+
+async function back() {
+  if (document.referrer) {
+    router.back()
+  } else {
+    await router.push('/workspaces') // fallback page
+  }
+}
+async function getWorkspace() {
+  const response = await $fetch(`/workspaces/${route.params.id}`, 'get')
+  if (response.status == 403 || !response.data?.workspace.is_owner) {
+    await back()
+  }
+  workspace.value = response.data.workspace
+}
+async function save(event: Event) {
+  const form = event?.target as HTMLFormElement
+  const response = await $fetch(`/workspaces/${route.params.id}`, 'post', new FormData(form))
+  workspace.value = response.data.workspace
+  if (!response.error) {
+    notify(response.message, 'success')
+    await back()
+  }
+}
+async function del() {
+  const response = await $fetch(`/workspaces/${route.params.id}`, 'delete')
+  if (!response.error) {
+    console.log(response)
+    notify(response.message, 'success')
+    await back()
+  }
+  await back()
+}
+
+getWorkspace()
+</script>
 
 <template>
   <main class="mx-auto max-w-[1400px] px-4 py-4">
@@ -12,10 +62,8 @@
           </p>
         </div>
         <div class="grid grid-cols-2 gap-2 text-xs text-[color:var(--text-2)] sm:grid-cols-4">
-          <span class="kbd justify-center">12 coworkers</span>
-          <span class="kbd justify-center">34 tasks</span>
-          <span class="kbd justify-center">8 in progress</span>
-          <span class="kbd justify-center">5 done this week</span>
+          <span class="kbd justify-center">{{ workspace?.members?.length }} coworkers</span>
+          <span class="kbd justify-center">{{ workspace?.tasks?.length }} tasks</span>
         </div>
       </div>
     </section>
@@ -29,27 +77,14 @@
         <div class="mt-3 space-y-2">
           <article
             class="rounded-[10px] border border-[color:var(--border)] bg-[rgba(255,255,255,0.02)] px-3 py-2"
+            v-for="member in workspace?.members"
+            :key="member?.id"
           >
-            <p class="text-sm font-medium">Egor</p>
-            <p class="text-xs text-[color:var(--text-2)]">Owner · Product</p>
-          </article>
-          <article
-            class="rounded-[10px] border border-[color:var(--border)] bg-[rgba(255,255,255,0.02)] px-3 py-2"
-          >
-            <p class="text-sm font-medium">Anna</p>
-            <p class="text-xs text-[color:var(--text-2)]">Designer</p>
-          </article>
-          <article
-            class="rounded-[10px] border border-[color:var(--border)] bg-[rgba(255,255,255,0.02)] px-3 py-2"
-          >
-            <p class="text-sm font-medium">Mark</p>
-            <p class="text-xs text-[color:var(--text-2)]">Frontend</p>
-          </article>
-          <article
-            class="rounded-[10px] border border-[color:var(--border)] bg-[rgba(255,255,255,0.02)] px-3 py-2"
-          >
-            <p class="text-sm font-medium">Ira</p>
-            <p class="text-xs text-[color:var(--text-2)]">QA</p>
+            <p class="text-sm font-medium">{{ member?.first_name }}</p>
+            <p class="text-xs text-[color:var(--text-2)]">
+              {{ member?.department }}
+              {{ member?.id == workspace?.owner?.id ? '• Owner' : '' }}
+            </p>
           </article>
         </div>
       </aside>

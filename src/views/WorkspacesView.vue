@@ -61,7 +61,7 @@ getWorkspaces()
           <span class="kbd">{{ workspace?.tasks.length }} tasks</span>
         </div>
         <div class="mt-4 flex items-center gap-2">
-          <a class="btn h-9 px-3 py-0 text-sm" href="./workspace.html">Open</a>
+          <router-link class="btn h-9 px-3 py-0 text-sm" :to="'/workspace/' + workspace?.id">Open</router-link>
           <router-link class="btn btn-ghost h-9 px-3 py-0 text-sm" :to="'/workspace-settings/' + workspace?.id"
             >Settings</router-link>
         </div>
