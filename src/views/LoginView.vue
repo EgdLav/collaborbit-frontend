@@ -26,7 +26,7 @@ async function submit(event: Event) {
     }
   } else {
     auth.setToken(response.data.token)
-    await router.push('/')
+    await router.push('/workspaces')
   }
 }
 

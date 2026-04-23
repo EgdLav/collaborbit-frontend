@@ -40,6 +40,10 @@ export const router = createRouter({
       component: () => import('@/views/WorkspaceSettings.vue'),
     },
     {
+      path: '/create-task/:workspace_id/:category_id',
+      component: () => import('@/views/TasksCreate.vue'),
+    },
+    {
       path: '/invites',
       component: () => import('@/views/Invites.vue'),
     },
@@ -58,6 +62,10 @@ export const router = createRouter({
     {
       path: '/tasks',
       component: () => import('@/views/TasksView.vue'),
+    },
+    {
+      path: '/:pathMatch(.*)*',
+      component: () => import('@/views/NotFound.vue'),
     },
   ],
 })

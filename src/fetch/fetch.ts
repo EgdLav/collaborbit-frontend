@@ -17,6 +17,21 @@ async function handleResponse(response: Response) {
     if (data?.message) {
       notify(data?.message, 'error')
     }
+    const current = router.currentRoute.value.path
+    if (response.status === 401) {
+      if (current !== '/login') {
+        await router.push('/login')
+      }
+    }
+    if (response.status == 403) {
+      if (current !== '/workspaces') {
+        if (document.referrer) {
+          router.back()
+        } else {
+          await router.push('/workspaces')
+        }
+      }
+    }
     return { data, error: true, status:response.status }
   } else {
     alert('Server error')

@@ -46,7 +46,7 @@ getWorkspaces()
         <div class="flex items-start justify-between gap-3">
           <div>
             <p class="text-base font-semibold">{{ workspace?.name }}</p>
-            <p class="mt-1 text-sm text-[color:var(--text-2)]">slug:{{ workspace?.description }}</p>
+            <p class="mt-1 text-sm text-[color:var(--text-2)]">slug:{{ workspace?.slug }}</p>
             <p class="mt-1 text-sm text-[color:var(--text-2)]">
               {{ workspace?.description }}
             </p>
@@ -57,13 +57,18 @@ getWorkspaces()
           >
         </div>
         <div class="mt-4 flex flex-wrap items-center gap-2 text-xs text-[color:var(--text-2)]">
-          <span class="kbd">{{ workspace?.members.length }} members</span>
-          <span class="kbd">{{ workspace?.tasks.length }} tasks</span>
+          <span class="kbd">{{ workspace?.members?.length }} members</span>
+          <span class="kbd">{{ workspace?.tasks?.length }} tasks</span>
         </div>
         <div class="mt-4 flex items-center gap-2">
-          <router-link class="btn h-9 px-3 py-0 text-sm" :to="'/workspace/' + workspace?.id">Open</router-link>
-          <router-link class="btn btn-ghost h-9 px-3 py-0 text-sm" :to="'/workspace-settings/' + workspace?.id"
-            >Settings</router-link>
+          <router-link class="btn h-9 px-3 py-0 text-sm" :to="'/workspace/' + workspace?.id"
+            >Open</router-link
+          >
+          <router-link
+            class="btn btn-ghost h-9 px-3 py-0 text-sm"
+            :to="'/workspace-settings/' + workspace?.id"
+            >Settings</router-link
+          >
         </div>
       </article>
     </section>

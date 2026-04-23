@@ -17,12 +17,13 @@ async function back() {
   if (document.referrer) {
     router.back()
   } else {
-    await router.push('/workspaces') // fallback page
+    await router.push('/workspaces')
   }
 }
+
 async function getWorkspace() {
   const response = await $fetch(`/workspaces/${route.params.id}`, 'get')
-  if (response.status == 403 || !response.data?.workspace.is_owner) {
+  if (!response.data?.workspace.is_owner) {
     await back()
   }
   workspace.value = response.data.workspace

@@ -56,9 +56,9 @@ getWorkspace()
       <div class="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
         <div>
           <p class="prompt"><b>workspace</b> / orbit-product <span class="kbd">active</span></p>
-          <h1 class="mt-1 text-lg font-semibold">Orbit Product Team</h1>
+          <h1 class="mt-1 text-lg font-semibold">{{ workspace.name }}</h1>
           <p class="mt-1 text-sm text-[color:var(--text-1)]">
-            Roadmap, release management and weekly execution.
+            {{ workspace.description }}
           </p>
         </div>
         <div class="grid grid-cols-2 gap-2 text-xs text-[color:var(--text-2)] sm:grid-cols-4">
@@ -93,24 +93,33 @@ getWorkspace()
         <div class="grid grid-cols-1 gap-4 md:grid-cols-3">
           <section
             class="rounded-[10px] border border-dashed border-[color:var(--border)] bg-[rgba(255,255,255,0.02)]"
+            v-for="category in workspace?.categories"
+            :key="category?.id"
           >
             <header class="border-b border-dashed border-[color:var(--border)] px-3 py-3">
               <p class="text-sm font-semibold">
-                To Do <span class="text-xs text-[color:var(--text-2)]">6</span>
+                {{ category.name }}
+                <span class="text-xs text-[color:var(--text-2)]">{{ category.tasks.length }}</span>
               </p>
             </header>
             <div class="space-y-2 p-3">
               <article
                 class="rounded-[10px] border border-dashed border-[color:var(--border)] bg-[rgba(0,0,0,0.18)] px-3 py-2"
+                v-for="task in category?.tasks"
+                :key="task?.id"
               >
-                <p class="text-sm font-semibold">Onboarding checklist</p>
-                <p class="mt-2 text-xs text-[color:var(--text-2)]">#product · Anna · 2d</p>
+                <p class="text-sm font-semibold">{{ task.name }}</p>
+                <p class="text-sm text-[color:var(--text-2)]">{{ task.description }}</p>
+                <p class="mt-2 text-xs text-[color:var(--text-2)]">{{ task.executor.first_name }} · {{task.due_date}}</p>
               </article>
               <article
-                class="rounded-[10px] border border-dashed border-[color:var(--border)] bg-[rgba(0,0,0,0.18)] px-3 py-2"
+                class="rounded-[10px] border border-dashed border-[color:var(--border)] bg-[rgba(0,0,0,0.18)]"
               >
-                <p class="text-sm font-semibold">Workspace analytics card</p>
-                <p class="mt-2 text-xs text-[color:var(--text-2)]">#ui · Mark · 1d</p>
+                <router-link
+                  :to="'/create-task/' + workspace.id + '/' + category.id"
+                  class="btn btn-primary w-full text-center px-3 py-2"
+                  >Add task</router-link
+                >
               </article>
             </div>
           </section>
