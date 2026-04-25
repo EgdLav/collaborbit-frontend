@@ -62,8 +62,8 @@ getWorkspace()
           </p>
         </div>
         <div class="grid grid-cols-2 gap-2 text-xs text-[color:var(--text-2)] sm:grid-cols-4">
-          <span class="kbd justify-center">{{ workspace?.members?.length }} coworkers</span>
-          <span class="kbd justify-center">{{ workspace?.tasks?.length }} tasks</span>
+          <span class="kbd justify-center">{{ workspace?.members?.length ?? 0 }} coworkers</span>
+          <span class="kbd justify-center">{{ workspace?.tasks?.length ?? 0 }} tasks</span>
         </div>
       </div>
     </section>
@@ -110,7 +110,9 @@ getWorkspace()
               >
                 <p class="text-sm font-semibold">{{ task.name }}</p>
                 <p class="text-sm text-[color:var(--text-2)]">{{ task.description }}</p>
-                <p class="mt-2 text-xs text-[color:var(--text-2)]">{{ task.executor.first_name }} · {{task.due_date}}</p>
+                <p class="mt-2 text-xs text-[color:var(--text-2)]">
+                  {{ task.executor.first_name }} · {{ task.due_date }}
+                </p>
               </article>
               <article
                 class="rounded-[10px] border border-dashed border-[color:var(--border)] bg-[rgba(0,0,0,0.18)]"
@@ -123,56 +125,11 @@ getWorkspace()
               </article>
             </div>
           </section>
-
-          <section
-            class="rounded-[10px] border border-dashed border-[color:rgb(var(--accent-rgb)/0.28)] bg-[color:rgb(var(--accent-rgb)/0.06)]"
+          <button
+            class="rounded-[10px] btn btn-primary font-semibold border border-dashed border-[color:rgb(var(--accent-rgb)/0.28)] bg-[color:rgb(var(--accent-rgb)/0.06)]"
           >
-            <header
-              class="border-b border-dashed border-[color:rgb(var(--accent-rgb)/0.28)] px-3 py-3"
-            >
-              <p class="text-sm font-semibold">
-                In Progress <span class="text-xs text-[color:var(--text-2)]">3</span>
-              </p>
-            </header>
-            <div class="space-y-2 p-3">
-              <article
-                class="rounded-[10px] border border-dashed border-[color:rgb(var(--accent-rgb)/0.28)] bg-[rgba(0,0,0,0.16)] px-3 py-2"
-              >
-                <p class="text-sm font-semibold">Invite acceptance flow</p>
-                <p class="mt-2 text-xs text-[color:var(--text-2)]">#auth · Egor · today</p>
-              </article>
-              <article
-                class="rounded-[10px] border border-dashed border-[color:rgb(var(--accent-rgb)/0.28)] bg-[rgba(0,0,0,0.16)] px-3 py-2"
-              >
-                <p class="text-sm font-semibold">Kanban drag visual hint</p>
-                <p class="mt-2 text-xs text-[color:var(--text-2)]">#tasks · Mark · 0.5d</p>
-              </article>
-            </div>
-          </section>
-
-          <section
-            class="rounded-[10px] border border-dashed border-[color:var(--border)] bg-[rgba(255,255,255,0.02)]"
-          >
-            <header class="border-b border-dashed border-[color:var(--border)] px-3 py-3">
-              <p class="text-sm font-semibold">
-                Done <span class="text-xs text-[color:var(--text-2)]">9</span>
-              </p>
-            </header>
-            <div class="space-y-2 p-3">
-              <article
-                class="rounded-[10px] border border-dashed border-[color:var(--border)] bg-[rgba(0,0,0,0.18)] px-3 py-2"
-              >
-                <p class="text-sm font-semibold">Role permissions map</p>
-                <p class="mt-2 text-xs text-[color:var(--text-2)]">#settings · done</p>
-              </article>
-              <article
-                class="rounded-[10px] border border-dashed border-[color:var(--border)] bg-[rgba(0,0,0,0.18)] px-3 py-2"
-              >
-                <p class="text-sm font-semibold">Workspace slug validation</p>
-                <p class="mt-2 text-xs text-[color:var(--text-2)]">#backend · merged</p>
-              </article>
-            </div>
-          </section>
+            Add category
+          </button>
         </div>
       </section>
     </section>

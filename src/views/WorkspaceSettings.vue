@@ -3,6 +3,7 @@ import { computed, ref } from 'vue'
 import { $fetch } from '@/fetch/fetch.ts'
 import { useRoute, useRouter } from 'vue-router'
 import { notify } from '@/services/notify.ts'
+import BaseModal from '@/components/BaseModal.vue'
 
 const workspace = ref({
   name: '',
@@ -34,7 +35,7 @@ async function save(event: Event) {
   workspace.value = response.data.workspace
   if (!response.error) {
     notify(response.message, 'success')
-    await back()
+    await router.push('/workspaces')
   }
 }
 async function del() {
@@ -42,9 +43,8 @@ async function del() {
   if (!response.error) {
     console.log(response)
     notify(response.message, 'success')
-    await back()
+    await router.push('/workspaces')
   }
-  await back()
 }
 
 getWorkspace()
@@ -105,34 +105,25 @@ getWorkspace()
             </button>
           </div>
         </article>
-        <transition name="modal">
-          <div
-            class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 mt-0"
-            v-if="showModal"
-          >
-            <div class="card w-full max-w-md p-5 modal">
-              <h2 class="text-sm font-semibold text-red-500">Delete workspace</h2>
+        <BaseModal v-model="showModal">
+          <h2 class="text-sm font-semibold text-red-500">Delete workspace</h2>
 
-              <p class="mt-2 text-sm text-[color:var(--text-1)]">
-                Are you sure you want to delete <b>Orbit Product Team</b>?
-              </p>
+          <p class="mt-2 text-sm text-[color:var(--text-1)]">
+            Are you sure you want to delete <b>{{ workspace.name }}</b
+            >?
+          </p>
 
-              <p class="mt-1 text-xs text-[color:var(--text-2)]">
-                This action cannot be undone. All tasks, comments and files will be permanently
-                deleted.
-              </p>
+          <p class="mt-1 text-xs text-[color:var(--text-2)]">This action cannot be undone.</p>
 
-              <div class="mt-4 flex justify-end gap-2">
-                <button class="btn h-9 px-3 py-0 text-sm" @click="showModal = false" type="button">
-                  Cancel
-                </button>
-                <button class="btn btn-danger h-9 px-3 py-0 text-sm" type="button" @click="del">
-                  Delete
-                </button>
-              </div>
-            </div>
+          <div class="mt-4 flex justify-end gap-2">
+            <button class="btn h-9 px-3 py-0 text-sm" type="button" @click="showModal = false">
+              Cancel
+            </button>
+            <button class="btn btn-danger h-9 px-3 py-0 text-sm" type="button" @click="del">
+              Delete
+            </button>
           </div>
-        </transition>
+        </BaseModal>
       </section>
     </form>
   </main>

@@ -57,8 +57,8 @@ getWorkspaces()
           >
         </div>
         <div class="mt-4 flex flex-wrap items-center gap-2 text-xs text-[color:var(--text-2)]">
-          <span class="kbd">{{ workspace?.members?.length }} members</span>
-          <span class="kbd">{{ workspace?.tasks?.length }} tasks</span>
+          <span class="kbd">{{ workspace?.members?.length ?? 0 }} members</span>
+          <span class="kbd">{{ workspace?.tasks?.length ?? 0 }} tasks</span>
         </div>
         <div class="mt-4 flex items-center gap-2">
           <router-link class="btn h-9 px-3 py-0 text-sm" :to="'/workspace/' + workspace?.id"
