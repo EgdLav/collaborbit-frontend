@@ -430,3 +430,46 @@ select option {
 .mt-0 {
   margin-top: 0 !important;
 }
+.menu {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 8px);
+
+  width: 180px;
+
+  border: 1px solid var(--border);
+  background: var(--bg-0);
+  border-radius: 12px;
+
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+
+  padding: 6px;
+  z-index: 999;
+}
+.navbar {
+  position: relative;
+  z-index: 1000;
+}
+
+.menu-item {
+  display: block;
+  width: 100%;
+
+  padding: 10px 12px;
+  border-radius: 10px;
+
+  font-size: 13px;
+  color: var(--text-1);
+
+  cursor: pointer;
+
+  transition: background 0.15s ease;
+}
+
+.menu-item.danger {
+  color: #ef4444;
+}
+
+.menu-item.danger:hover {
+  background: rgba(239, 68, 68, 0.08);
+}

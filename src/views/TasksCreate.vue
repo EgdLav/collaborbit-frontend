@@ -40,8 +40,17 @@ async function submit(event: Event) {
       }
     }
   } else {
-    notify(response.message, "success")
+    notify(response.message, 'success')
     await router.push(`/workspace/${workspace.value.id}`)
+  }
+}
+function handleFiles(event: Event) {
+  const input = event.target as HTMLInputElement
+  if (!input.files) return
+
+  if (input.files.length > 20) {
+    input.insertAdjacentHTML('afterend', `<span class="error mt-2">Max 20 files allowed</span>`)
+    input.value = ''
   }
 }
 
@@ -106,7 +115,7 @@ onMounted(() =>
 
         <label class="block">
           <span class="mb-1.5 block text-sm text-[color:var(--text-1)]">Files</span>
-          <input class="input" type="file" multiple name="files[]" />
+          <input class="input" type="file" multiple name="files[]" @change="handleFiles" />
         </label>
 
         <label class="block">
@@ -120,12 +129,16 @@ onMounted(() =>
 
         <label class="block">
           <span class="mb-1.5 block text-sm text-[color:var(--text-1)]">Due date</span>
-          <input class="input" type="date" name="due_date"/>
+          <input class="input" type="date" name="due_date" />
         </label>
 
         <div class="flex flex-wrap items-center gap-2 pt-1">
           <button class="btn btn-primary h-10 px-4 py-0 text-sm" type="submit">Create task</button>
-          <a class="btn btn-ghost h-10 px-4 py-0 text-sm" href="./">Cancel</a>
+          <router-link
+            class="btn btn-ghost h-10 px-4 py-0 text-sm"
+            :to="'/workspace/' + route.params.workspace_id"
+            >Cancel</router-link
+          >
         </div>
       </form>
     </section>

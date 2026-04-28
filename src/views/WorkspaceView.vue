@@ -3,6 +3,7 @@ import { computed, ref } from 'vue'
 import { $fetch } from '@/fetch/fetch.ts'
 import { useRoute, useRouter } from 'vue-router'
 import { notify } from '@/services/notify.ts'
+import BaseModal from '@/components/BaseModal.vue'
 
 const workspace = ref({
   name: '',
@@ -28,23 +29,15 @@ async function getWorkspace() {
   }
   workspace.value = response.data.workspace
 }
-async function save(event: Event) {
+async function createCategory(event: Event) {
   const form = event?.target as HTMLFormElement
-  const response = await $fetch(`/workspaces/${route.params.id}`, 'post', new FormData(form))
+  const response = await $fetch(`/workspaces/${route.params.id}/categories`, 'post', new FormData(form))
   workspace.value = response.data.workspace
   if (!response.error) {
     notify(response.message, 'success')
-    await back()
+    showModal.value=false
+    await getWorkspace()
   }
-}
-async function del() {
-  const response = await $fetch(`/workspaces/${route.params.id}`, 'delete')
-  if (!response.error) {
-    console.log(response)
-    notify(response.message, 'success')
-    await back()
-  }
-  await back()
 }
 
 getWorkspace()
@@ -55,7 +48,7 @@ getWorkspace()
     <section class="card p-4">
       <div class="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
         <div>
-          <p class="prompt"><b>workspace</b> / orbit-product <span class="kbd">active</span></p>
+          <p class="prompt"><b>workspace</b> / orbit-product</p>
           <h1 class="mt-1 text-lg font-semibold">{{ workspace.name }}</h1>
           <p class="mt-1 text-sm text-[color:var(--text-1)]">
             {{ workspace.description }}
@@ -118,7 +111,7 @@ getWorkspace()
                 class="rounded-[10px] border border-dashed border-[color:var(--border)] bg-[rgba(0,0,0,0.18)]"
               >
                 <router-link
-                  :to="'/create-task/' + workspace.id + '/' + category.id"
+                  :to="'/create-task/' + workspace?.id + '/' + category?.id"
                   class="btn btn-primary w-full text-center px-3 py-2"
                   >Add task</router-link
                 >
@@ -126,12 +119,48 @@ getWorkspace()
             </div>
           </section>
           <button
+            v-if="workspace?.is_owner"
             class="rounded-[10px] btn btn-primary font-semibold border border-dashed border-[color:rgb(var(--accent-rgb)/0.28)] bg-[color:rgb(var(--accent-rgb)/0.06)]"
+            @click="showModal = true"
           >
             Add category
           </button>
         </div>
       </section>
+      <BaseModal v-model="showModal">
+        <div
+          class="flex items-center justify-between gap-3 border-b border-[color:var(--border)] pb-4"
+        >
+          <div>
+            <h2 class="text-base font-semibold">Create Category</h2>
+            <p class="mt-1 text-xs text-[color:var(--text-2)]">
+              Add a new category to organize your tasks
+            </p>
+          </div>
+        </div>
+
+        <form class="mt-4 space-y-4" @submit.prevent="createCategory">
+          <div>
+            <label for="category-name" class="mb-2 block text-sm font-medium">Category Name</label>
+            <input
+              id="category-name"
+              type="text"
+              class="input"
+              placeholder="e.g. Development, Design, Marketing"
+              required
+              aria-required="true"
+              name="name"
+            />
+          </div>
+
+          <div class="divider"></div>
+
+          <div class="flex items-center justify-end gap-2">
+            <button type="button" class="btn btn-ghost" @click="showModal = false">Cancel</button>
+            <button type="submit" class="btn btn-primary">Create Category</button>
+          </div>
+        </form>
+      </BaseModal>
     </section>
   </main>
 </template>
