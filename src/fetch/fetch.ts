@@ -45,7 +45,7 @@ export async function $fetch(
   const url = new URL('http://127.0.0.1:8000/api' + path)
 
   const auth = useAuthStore()
-  const headers = {
+  let headers = {
     Authorization: `Bearer ${auth.token}`,
     Accept: 'application/json',
   }
@@ -53,6 +53,11 @@ export async function $fetch(
     url.search = new URLSearchParams(body ?? {}).toString()
 
     return await handleResponse(await fetch(url, { method, headers }))
+  }
+  if (!(body instanceof FormData)) {
+    // @ts-ignore
+    headers['Content-Type'] = 'application/json'
+    return await handleResponse(await fetch(url, { method, headers, body: JSON.stringify(body) }))
   }
   // @ts-ignore
   return await handleResponse(await fetch(url, { method, body, headers }))
