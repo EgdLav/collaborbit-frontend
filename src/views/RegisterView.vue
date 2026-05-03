@@ -176,8 +176,8 @@ onMounted(() =>{
       </div>
 
       <p class="mt-4 text-center text-sm text-[color:var(--text-2)]">
-        Уже есть аккаунт?
-        <router-link class="link" to="/login">Войти</router-link>
+        Already have an account?
+        <router-link class="link" to="/login">Log in</router-link>
       </p>
     </section>
   </main>

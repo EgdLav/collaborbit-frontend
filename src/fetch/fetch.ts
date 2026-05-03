@@ -3,6 +3,7 @@ import { notify } from '@/services/notify.ts'
 import { router } from '@/router'
 
 
+
 async function handleResponse(response: Response) {
   if (response.status >= 200 && response.status < 400) {
     try {
@@ -20,6 +21,8 @@ async function handleResponse(response: Response) {
     const current = router.currentRoute.value.path
     if (response.status === 401) {
       if (current !== '/login') {
+        const auth = useAuthStore()
+        auth.logout()
         await router.push('/login')
       }
     }

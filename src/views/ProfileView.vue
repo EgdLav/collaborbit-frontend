@@ -1,102 +1,265 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { ref } from 'vue'
+import { $fetch } from '@/fetch/fetch.ts'
+import { useRouter } from 'vue-router'
+import { notify } from '@/services/notify.ts'
+import BaseModal from '@/components/BaseModal.vue'
+
+const router = useRouter()
+
+const showDeleteModal = ref(false)
+
+const user = ref({
+  first_name: '',
+  last_name: '',
+  email: '',
+  department: '',
+  bio: '',
+})
+
+const stats = ref({
+  workspaces: 0,
+  tasks: 0,
+  completed_tasks: 0,
+})
+const departments = [
+  'Backend Development',
+  'Frontend Development',
+  'Engineering',
+  'Mobile Development',
+  'DevOps',
+  'Quality Assurance',
+  'Data Engineering',
+  'Data Science',
+  'Product Management',
+  'UI/UX Design',
+  'Graphic Design',
+  'Research & Analytics',
+  'Marketing',
+  'Sales',
+  'Business Development',
+  'Human Resources',
+  'Finance',
+  'Legal',
+  'Operations',
+  'Public Relations',
+  'Copywriting',
+]
+const preview = ref<string | null>(null)
+
+async function getProfile() {
+  const res = await $fetch('/profile', 'get')
+  user.value = res.data.user
+  stats.value = res.data.user.statistics
+  preview.value = res.data.user.avatar
+}
+
+async function save(e: Event) {
+  const form = e.target as HTMLFormElement
+  const res = await $fetch('/profile', 'post', new FormData(form))
+
+  if (!res.error) notify(res.message, 'success')
+}
+
+async function back() {
+  if (document.referrer) {
+    router.back()
+  } else {
+    await router.push('/workspaces')
+  }
+}
+
+async function deleteProfile() {
+  const res = await $fetch('/profile', 'delete')
+
+  if (!res.error) {
+    notify('Account deleted. Bye', 'success')
+    await router.push('/register')
+  }
+}
+function onAvatarChange(event: Event) {
+  const input = event.target as HTMLInputElement
+  const file = input.files?.[0]
+
+  if (!file) return
+  preview.value = URL.createObjectURL(file)
+}
+
+getProfile()
+</script>
 
 <template>
-  <main class="mx-auto max-w-6xl px-4 py-8">
-    <div class="grid grid-cols-1 gap-4 lg:grid-cols-12">
-      <section class="lg:col-span-4">
-        <div class="card p-4">
-          <div class="flex items-start gap-3">
-            <div
-              class="inline-flex h-14 w-14 flex-none items-center justify-center rounded-[16px] border border-[color:var(--border)] bg-[rgba(255,255,255,0.03)] font-mono text-sm text-[color:var(--text-1)]"
+  <main class="mx-auto max-w-5xl px-4 py-6">
+
+    <!-- HEADER -->
+    <section class="card p-4">
+      <p class="prompt">
+        <b>user</b> / settings
+      </p>
+
+      <h1 class="mt-1 text-lg font-semibold">
+        Identity Control Panel
+      </h1>
+
+      <p class="mt-1 text-sm text-[color:var(--text-1)]">
+        Manage your digital existence before it manages you.
+      </p>
+    </section>
+
+    <form @submit.prevent="save">
+      <input type="hidden" name="_method" value="patch">
+      <section class="mt-4 space-y-4">
+
+        <!-- PROFILE -->
+        <article class="card p-4">
+          <h2 class="text-sm font-semibold">Profile</h2>
+
+          <div class="mt-3 grid grid-cols-1 gap-3 sm:grid-cols-2">
+            <label>
+              <span class="text-sm text-[color:var(--text-1)]">First name</span>
+              <input class="input mt-1"
+                     name="first_name"
+                     v-model="user.first_name"
+                     placeholder="John" />
+            </label>
+
+            <label>
+              <span class="text-sm text-[color:var(--text-1)]">Last name</span>
+              <input class="input mt-1"
+                     name="last_name"
+                     v-model="user.last_name"
+                     placeholder="Kirov" />
+            </label>
+          </div>
+
+          <label class="mt-3 block">
+            <span class="text-sm text-[color:var(--text-1)]">Email</span>
+            <input class="input mt-1"
+                   name="email"
+                   v-model="user.email"
+                   placeholder="collab@orbit.com" />
+          </label>
+
+          <label class="mt-3 block">
+            <span class="text-sm text-[color:var(--text-1)]">Department</span>
+            <select
+              class="input mt-1"
+              name="department"
+              v-model="user.department"
             >
-              EG
-            </div>
-            <div class="min-w-0">
-              <p class="prompt">
-                <b>user</b> / profile <span class="text-[color:var(--text-2)]">—</span>
-                <span class="kbd">whoami</span>
-              </p>
-              <h1 class="truncate text-base font-semibold leading-6">Egor</h1>
-              <p class="mt-1 truncate text-sm text-[color:var(--text-1)]">you@studio.dev</p>
-              <p class="mt-2 text-xs text-[color:var(--text-2)]">
-                Role: Owner · Workspace: Orbit Dev
-              </p>
+              <option
+                v-for="dep in departments"
+                :key="dep"
+                :value="dep"
+              >
+                {{ dep }}
+              </option>
+            </select>
+          </label>
+
+          <label class="mt-3 block">
+            <span class="text-sm text-[color:var(--text-1)]">Bio</span>
+            <textarea class="input mt-1 min-h-[100px]"
+                      name="bio"
+                      v-model="user.bio"
+                      placeholder="Write something impressive"></textarea>
+          </label>
+          <div>
+            <label class="mb-2 block text-sm text-[color:var(--text-1)]" for="avatar">Avatar</label>
+            <div class="flex flex-col gap-3">
+              <input
+                class="input"
+                id="avatar"
+                name="avatar"
+                type="file"
+                accept="image/*"
+                @change="onAvatarChange"
+              />
+              <div v-if="preview" class="flex justify-center">
+                <img
+                  :src="preview"
+                  alt="Avatar preview"
+                  class="h-24 w-24 rounded-full object-cover"
+                />
+              </div>
             </div>
           </div>
+        </article>
 
-          <div class="my-4 divider"></div>
+        <!-- STATS -->
+        <article class="card p-4">
+          <h2 class="text-sm font-semibold">Life statistics</h2>
 
-          <div class="grid grid-cols-2 gap-2">
-            <button class="btn btn-primary" type="button">Edit profile</button>
-            <button class="btn" type="button">Change password</button>
+          <div class="mt-3 grid grid-cols-3 gap-3">
+            <div class="card p-3">
+              <p class="text-xs text-[color:var(--text-2)]">Workspaces</p>
+              <p class="text-lg font-semibold">{{ stats.workspaces ?? 0 }}</p>
+            </div>
+
+            <div class="card p-3">
+              <p class="text-xs text-[color:var(--text-2)]">Tasks executed</p>
+              <p class="text-lg font-semibold">{{ stats.tasks_executed ?? 0 }}</p>
+            </div>
+            <div class="card p-3">
+              <p class="text-xs text-[color:var(--text-2)]">Chats</p>
+              <p class="text-lg font-semibold">{{ stats.chats ?? 0 }}</p>
+            </div>
           </div>
-        </div>
+        </article>
+
+        <!-- ACTIONS (ONE LINE) -->
+        <article class="card p-4">
+          <div class="flex flex-wrap items-center gap-2">
+
+            <button class="btn btn-primary h-9 px-3 text-sm" type="submit">
+              Save changes
+            </button>
+
+            <button class="btn h-9 px-3 text-sm" type="button" @click="back">
+              Exit without changes
+            </button>
+
+            <!-- subtle danger button -->
+            <button
+              class="ml-auto h-9 px-3 text-sm text-red-400 hover:text-red-300 opacity-60 hover:opacity-100 transition"
+              type="button"
+              @click="showDeleteModal = true"
+            >
+              Delete account
+            </button>
+
+          </div>
+        </article>
+
       </section>
+    </form>
 
-      <section class="lg:col-span-8">
-        <div class="card p-4">
-          <header class="flex flex-col justify-between gap-2 sm:flex-row sm:items-center">
-            <div>
-              <h2 class="text-sm font-semibold">Work snapshot</h2>
-              <p class="mt-1 text-sm text-[color:var(--text-1)]">
-                Компактная “рабочая” версия профиля: что у вас на руках.
-              </p>
-            </div>
-            <a class="btn btn-ghost h-9 px-3 py-0 text-sm" href="./tasks-v4.html">Go to board</a>
-          </header>
+    <!-- DELETE MODAL -->
+    <BaseModal v-model="showDeleteModal">
+      <h2 class="text-sm font-semibold text-red-500">
+        Final decision
+      </h2>
 
-          <div class="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-3">
-            <div class="task-card">
-              <p class="text-xs text-[color:var(--text-2)]">Assigned</p>
-              <p class="mt-1 text-lg font-semibold">6</p>
-              <p class="mt-1 text-xs text-[color:var(--text-2)]">open tasks</p>
-            </div>
-            <div class="task-card">
-              <p class="text-xs text-[color:var(--text-2)]">In progress</p>
-              <p class="mt-1 text-lg font-semibold">2</p>
-              <p class="mt-1 text-xs text-[color:var(--text-2)]">WIP</p>
-            </div>
-            <div class="task-card">
-              <p class="text-xs text-[color:var(--text-2)]">This week</p>
-              <p class="mt-1 text-lg font-semibold">14</p>
-              <p class="mt-1 text-xs text-[color:var(--text-2)]">messages</p>
-            </div>
-          </div>
+      <p class="mt-2 text-sm text-[color:var(--text-1)]">
+        You are about to delete your account.
+        This removes everything: workspaces, tasks, memories, hopes.
+      </p>
 
-          <div class="my-4 divider"></div>
+      <p class="mt-1 text-xs text-[color:var(--text-2)]">
+        After this, even database will pretend you never existed.
+      </p>
 
-          <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
-            <article class="task-card">
-              <h3 class="text-sm font-semibold">Recent activity</h3>
-              <ul class="mt-3 space-y-2 text-sm text-[color:var(--text-1)]">
-                <li class="flex items-start justify-between gap-3">
-                  <span class="min-w-0 truncate">Updated: “Compact task editor”</span>
-                  <span class="timestamp">Today</span>
-                </li>
-                <li class="flex items-start justify-between gap-3">
-                  <span class="min-w-0 truncate">Replied in chat with Alex</span>
-                  <span class="timestamp">12:05</span>
-                </li>
-                <li class="flex items-start justify-between gap-3">
-                  <span class="min-w-0 truncate">Changed settings: notifications</span>
-                  <span class="timestamp">Yesterday</span>
-                </li>
-              </ul>
-            </article>
+      <div class="mt-4 flex justify-end gap-2">
+        <button class="btn h-9 px-3 text-sm" @click="showDeleteModal = false">
+          I changed my mind
+        </button>
 
-            <article class="task-card">
-              <h3 class="text-sm font-semibold">Developer notes</h3>
-              <p class="mt-3 text-sm leading-6 text-[color:var(--text-1)]">
-                CollabOrbit держит UI “строгим”: тонкие границы, мягкий текст, минимум теней. Если
-                нужно больше контраста — добавляем его через
-                <span class="font-mono text-xs text-[color:var(--text-2)]">border</span>, не через
-                белый фон.
-              </p>
-            </article>
-          </div>
-        </div>
-      </section>
-    </div>
+        <button class="btn btn-danger h-9 px-3 text-sm" @click="deleteProfile">
+          Yes, delete me
+        </button>
+      </div>
+    </BaseModal>
+
   </main>
 </template>
 

@@ -3,6 +3,7 @@ import { onMounted } from 'vue'
 import { $fetch } from '@/fetch/fetch.ts'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '@/stores/authStore.ts'
+import {notify} from "@/services/notify";
 
 const router = useRouter()
 const auth = useAuthStore()
@@ -27,6 +28,7 @@ async function submit(event: Event) {
   } else {
     auth.setToken(response.data.token)
     auth.setAvatar(response.data.user.avatar)
+    notify(response.message, 'success')
     await router.push('/workspaces')
   }
 }
@@ -82,8 +84,8 @@ onMounted(() =>
       </div>
 
       <p class="mt-4 text-center text-sm text-[color:var(--text-2)]">
-        Нет аккаунта?
-        <router-link class="link" to="/register">Создать</router-link>
+        No account?
+        <router-link class="link" to="/register">Create</router-link>
       </p>
     </section>
   </main>
