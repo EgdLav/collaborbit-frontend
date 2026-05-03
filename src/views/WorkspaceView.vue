@@ -34,9 +34,6 @@ async function back() {
 }
 async function getWorkspace() {
   const response = await $fetch(`/workspaces/${route.params.id}`, 'get')
-  if (response.status == 403 || !response.data?.workspace.is_owner) {
-    await back()
-  }
   workspace.value = response.data.workspace
 }
 async function createCategory(event: Event) {
@@ -75,8 +72,8 @@ async function onDrop(targetCategory: any) {
 
   const response = await $fetch(
     `/workspaces/${route.params.id}/categories/${fromCategory.id}/tasks/${task.id}/category`,
-    'post',
-    { category_id : targetCategory.id, _method: "patch"}
+    'PATCH',
+    { category_id : targetCategory.id}
   )
 
   if (!response.error) {

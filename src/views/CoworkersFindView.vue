@@ -1,34 +1,66 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import { $fetch } from '@/fetch/fetch.ts'
+import BaseModal from '@/components/BaseModal.vue'
+import { notify } from '@/services/notify.ts'
+import {useAuthStore} from "@/stores/authStore";
 
 const coworkers = ref(null)
+const auth = useAuthStore()
+
 const filters = ref({
   department: '',
   name: '',
   page: '1',
 })
+
 const pages = computed(() =>
   Array.from({ length: 5 }, (_, i) => Number(filters.value.page) - 2 + i).filter(
     (p) => p > 0 && p <= coworkers?.value?.pagination?.last_page,
   ),
 )
+
+const showInviteModal = ref(false)
+const selectedUserId = ref<number | null>(null)
+const workspaces = (await $fetch('/workspaces/owner', 'get'))?.data?.workspaces || []
+const selectedWorkspace = ref<number | null>(null)
+
 async function getCoworkers() {
   const response = await $fetch('/users', 'get', filters.value)
-  coworkers.value = response.data
+  coworkers.value = {
+    ...response.data,
+    users: response.data.users.filter((c: any) => c.id != auth.id),
+  }
 }
 
 async function changePage(page: number) {
-  if (page < 1 || page > coworkers?.value?.pagination?.last_page) {
-    return
-  }
+  if (page < 1 || page > coworkers?.value?.pagination?.last_page) return
+
   filters.value.page = String(page)
   await getCoworkers()
 }
 
+async function openInvite(userId: number) {
+  selectedUserId.value = userId
+  showInviteModal.value = true
+}
+
+async function sendInvite() {
+  if (!selectedWorkspace.value || !selectedUserId.value) return
+
+  const res = await $fetch(`/workspaces/${selectedWorkspace.value}/invitations`, 'post', {
+    invitee_id: selectedUserId.value,
+  })
+
+  if (!res.error) {
+    notify(res.message, 'success')
+    showInviteModal.value = false
+    selectedWorkspace.value = null
+  }
+}
+
 getCoworkers()
 </script>
-
 <template>
   <main class="mx-auto grid max-w-[1200px] grid-cols-1 gap-6 px-4 py-8 lg:grid-cols-12">
     <!-- Sidebar / Filters -->
@@ -136,6 +168,7 @@ getCoworkers()
                 name="department"
                 value="Data Engineering"
                 v-model="filters.department"
+                @change="getCoworkers()"
               />
               <span class="text-sm">Data Engineering</span>
             </label>
@@ -146,6 +179,7 @@ getCoworkers()
                 name="department"
                 value="Data Science"
                 v-model="filters.department"
+                @change="getCoworkers()"
               />
               <span class="text-sm">Data Science</span>
             </label>
@@ -156,6 +190,7 @@ getCoworkers()
                 name="department"
                 value="Product Management"
                 v-model="filters.department"
+                @change="getCoworkers()"
               />
               <span class="text-sm">Product Management</span>
             </label>
@@ -166,6 +201,7 @@ getCoworkers()
                 name="department"
                 value="UI/UX Design"
                 v-model="filters.department"
+                @change="getCoworkers()"
               />
               <span class="text-sm">UI/UX Design</span>
             </label>
@@ -176,6 +212,7 @@ getCoworkers()
                 name="department"
                 value="Graphic Design"
                 v-model="filters.department"
+                @change="getCoworkers()"
               />
               <span class="text-sm">Graphic Design</span>
             </label>
@@ -186,6 +223,7 @@ getCoworkers()
                 name="department"
                 value="Research & Analytics"
                 v-model="filters.department"
+                @change="getCoworkers()"
               />
               <span class="text-sm">Research & Analytics</span>
             </label>
@@ -196,12 +234,13 @@ getCoworkers()
                 name="department"
                 value="Marketing"
                 v-model="filters.department"
+                @change="getCoworkers()"
               />
               <span class="text-sm">Marketing</span>
             </label>
 
             <label class="flex items-center gap-2">
-              <input type="radio" name="department" value="Sales" v-model="filters.department" />
+              <input type="radio" name="department" value="Sales" v-model="filters.department" @change="getCoworkers()"/>
               <span class="text-sm">Sales</span>
             </label>
 
@@ -211,6 +250,7 @@ getCoworkers()
                 name="department"
                 value="Business Development"
                 v-model="filters.department"
+                @change="getCoworkers()"
               />
               <span class="text-sm">Business Development</span>
             </label>
@@ -221,17 +261,18 @@ getCoworkers()
                 name="department"
                 value="Human Resources"
                 v-model="filters.department"
+                @change="getCoworkers()"
               />
               <span class="text-sm">Human Resources</span>
             </label>
 
             <label class="flex items-center gap-2">
-              <input type="radio" name="department" value="Finance" v-model="filters.department" />
+              <input type="radio" name="department" value="Finance" v-model="filters.department" @change="getCoworkers()"/>
               <span class="text-sm">Finance</span>
             </label>
 
             <label class="flex items-center gap-2">
-              <input type="radio" name="department" value="Legal" v-model="filters.department" />
+              <input type="radio" name="department" value="Legal" v-model="filters.department" @change="getCoworkers()"/>
               <span class="text-sm">Legal</span>
             </label>
 
@@ -241,6 +282,7 @@ getCoworkers()
                 name="department"
                 value="Operations"
                 v-model="filters.department"
+                @change="getCoworkers()"
               />
               <span class="text-sm">Operations</span>
             </label>
@@ -251,6 +293,7 @@ getCoworkers()
                 name="department"
                 value="Public Relations"
                 v-model="filters.department"
+                @change="getCoworkers()"
               />
               <span class="text-sm">Public Relations</span>
             </label>
@@ -261,6 +304,7 @@ getCoworkers()
                 name="department"
                 value="Copywriting"
                 v-model="filters.department"
+                @change="getCoworkers()"
               />
               <span class="text-sm">Copywriting</span>
             </label>
@@ -317,11 +361,27 @@ getCoworkers()
           <p class="mt-1 text-xs text-[color:var(--text-2)]">{{ coworker?.department }}</p>
           <p class="mt-2 text-xs text-[color:var(--text-2)]">{{ coworker?.bio }}</p>
           <div class="mt-4 flex gap-2">
-            <button class="btn btn-primary w-full h-8 px-3 py-0 text-xs" type="button">
+            <button
+              class="btn btn-primary w-full h-8 px-3 py-0 text-xs"
+              type="button"
+            >
               Message
             </button>
-            <button class="btn btn-ghost w-full h-8 px-3 py-0 text-xs" type="button">
+
+            <button
+              class="btn btn-ghost w-full h-8 px-3 py-0 text-xs"
+              type="button"
+            >
               Profile
+            </button>
+
+            <!-- 🔥 NEW -->
+            <button
+              class="btn btn-ghost w-full h-8 px-3 py-0 text-xs"
+              type="button"
+              @click="openInvite(coworker.id)"
+            >
+              Invite
             </button>
           </div>
         </div>
@@ -357,125 +417,48 @@ getCoworkers()
         </button>
       </div>
     </div>
+    <BaseModal v-model="showInviteModal">
+      <h2 class="text-sm font-semibold">
+        Invite user
+      </h2>
+
+      <p class="mt-2 text-sm text-[color:var(--text-1)]">
+        Choose workspace to invite this person into your controlled chaos.
+      </p>
+
+      <div class="mt-4">
+        <select
+          class="input w-full"
+          v-model="selectedWorkspace"
+        >
+          <option
+            v-for="ws in workspaces"
+            :key="ws.id"
+            :value="ws.id"
+          >
+            {{ ws.name }}
+          </option>
+        </select>
+      </div>
+
+      <div class="mt-4 flex justify-end gap-2">
+        <button
+          class="btn h-9 px-3 text-sm"
+          @click="showInviteModal = false"
+        >
+          Cancel
+        </button>
+
+        <button
+          class="btn btn-primary h-9 px-3 text-sm"
+          @click="sendInvite"
+        >
+          Send invite
+        </button>
+      </div>
+    </BaseModal>
   </main>
 </template>
 
 <style scoped>
-.coworkers-container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 20px;
-}
-
-.header {
-  margin-bottom: 30px;
-}
-
-.header h1 {
-  font-size: 28px;
-  font-weight: 600;
-  margin: 0 0 8px 0;
-}
-
-.header p {
-  color: #666;
-  margin: 0;
-}
-
-.search-section {
-  display: flex;
-  gap: 12px;
-  margin-bottom: 30px;
-}
-
-.search-input,
-.filter-select {
-  padding: 10px 14px;
-  border: 1px solid #ddd;
-  border-radius: 6px;
-  font-size: 14px;
-}
-
-.search-input {
-  flex: 1;
-  min-width: 200px;
-}
-
-.filter-select {
-  min-width: 150px;
-}
-
-.coworkers-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 20px;
-}
-
-.coworker-card {
-  border: 1px solid #e0e0e0;
-  border-radius: 8px;
-  padding: 20px;
-  text-align: center;
-  transition: box-shadow 0.3s;
-}
-
-.coworker-card:hover {
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-}
-
-.avatar {
-  width: 64px;
-  height: 64px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: white;
-  font-weight: 600;
-  font-size: 20px;
-  margin: 0 auto 16px;
-}
-
-.coworker-card h3 {
-  margin: 0 0 4px 0;
-  font-size: 16px;
-  font-weight: 600;
-}
-
-.role {
-  margin: 4px 0;
-  font-size: 14px;
-  color: #333;
-  font-weight: 500;
-}
-
-.department {
-  margin: 4px 0 16px 0;
-  font-size: 12px;
-  color: #999;
-  text-transform: capitalize;
-}
-
-.actions {
-  display: flex;
-  gap: 8px;
-}
-
-.btn-primary,
-.btn-secondary {
-  flex: 1;
-  padding: 8px 12px;
-  border: none;
-  border-radius: 4px;
-  font-size: 12px;
-  cursor: pointer;
-  font-weight: 500;
-}
-
-.no-results {
-  text-align: center;
-  color: #999;
-  padding: 40px 20px;
-}
 </style>

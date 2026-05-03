@@ -28,6 +28,7 @@ async function submit(event: Event) {
   } else {
     auth.setToken(response.data.token)
     auth.setAvatar(response.data.user.avatar)
+    auth.setId(response.data.user.id)
     notify(response.message, 'success')
     await router.push('/workspaces')
   }

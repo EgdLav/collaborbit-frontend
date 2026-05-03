@@ -43,6 +43,7 @@ async function logout() {
 
         <nav class="hidden items-center gap-3 text-sm sm:flex">
           <router-link class="link" to="/tasks">Tasks</router-link>
+          <router-link class="link" to="/invites">Invites</router-link>
           <a class="link" href="./chat">Chat</a>
           <a class="link" href="./my_profile">Settings</a>
           <router-link
