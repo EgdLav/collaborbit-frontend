@@ -86,7 +86,7 @@ onMounted(() =>
 
       <p class="mt-4 text-center text-sm text-[color:var(--text-2)]">
         No account?
-        <router-link class="link" to="/register">Create</router-link>
+        <router-link class="link" to="/register">Create account</router-link>
       </p>
     </section>
   </main>

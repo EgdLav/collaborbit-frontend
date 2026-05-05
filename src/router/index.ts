@@ -48,7 +48,11 @@ export const router = createRouter({
       component: () => import('@/views/Invites.vue'),
     },
     {
-      path: '/chat',
+      path: '/chat/:user_id',
+      component: () => import('@/views/ChatView.vue'),
+    },
+    {
+      path: '/workspace/:workspace_id/chat',
       component: () => import('@/views/ChatView.vue'),
     },
     {
@@ -56,7 +60,7 @@ export const router = createRouter({
       component: () => import('@/views/MyProfileView.vue'),
     },
     {
-      path: '/profile',
+      path: '/profile/:id',
       component: () => import('@/views/ProfileView.vue'),
     },
     {

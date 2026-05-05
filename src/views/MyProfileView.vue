@@ -216,7 +216,7 @@ getProfile()
             </button>
 
             <button class="btn h-9 px-3 text-sm" type="button" @click="back">
-              Exit without changes
+              Back
             </button>
 
             <!-- subtle danger button -->

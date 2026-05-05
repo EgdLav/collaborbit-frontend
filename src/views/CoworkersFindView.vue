@@ -375,7 +375,6 @@ getCoworkers()
               Profile
             </button>
 
-            <!-- 🔥 NEW -->
             <button
               class="btn btn-ghost w-full h-8 px-3 py-0 text-xs"
               type="button"

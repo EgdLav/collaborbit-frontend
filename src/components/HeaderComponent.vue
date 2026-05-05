@@ -41,7 +41,8 @@ async function logout() {
           <span class="text-sm font-semibold tracking-wide">CollabOrbit</span>
         </router-link>
 
-        <nav class="hidden items-center gap-3 text-sm sm:flex">
+        <nav class="hidden items-center gap-3 text-sm sm:flex" v-if="token">
+          <router-link class="link" to="/workspaces">Workspaces</router-link>
           <router-link class="link" to="/tasks">Tasks</router-link>
           <router-link class="link" to="/invites">Invites</router-link>
           <a class="link" href="./chat">Chat</a>
