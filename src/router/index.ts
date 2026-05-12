@@ -52,6 +52,10 @@ export const router = createRouter({
       component: () => import('@/views/ChatView.vue'),
     },
     {
+      path: '/chats',
+      component: () => import('@/views/ChatsView.vue'),
+    },
+    {
       path: '/workspace/:workspace_id/chat',
       component: () => import('@/views/ChatView.vue'),
     },

@@ -43,15 +43,13 @@ async function logout() {
 
         <nav class="hidden items-center gap-3 text-sm sm:flex" v-if="token">
           <router-link class="link" to="/workspaces">Workspaces</router-link>
-          <router-link class="link" to="/tasks">Tasks</router-link>
           <router-link class="link" to="/invites">Invites</router-link>
-          <a class="link" href="./chat">Chat</a>
-          <a class="link" href="./my_profile">Settings</a>
+          <router-link class="link" to="/chats">Chats</router-link>
           <router-link
             class="link"
             to="/find-coworkers"
           >
-            Find coworkers
+            Find-coworkers
           </router-link>
         </nav>
 

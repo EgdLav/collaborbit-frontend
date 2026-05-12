@@ -322,16 +322,6 @@ getCoworkers()
         </p>
       </div>
 
-      <!-- Sort / View Options -->
-      <div class="mb-6 flex items-center justify-between gap-3">
-        <div class="flex gap-2">
-          <button class="btn btn-ghost h-9 px-3 py-0 text-xs" type="button">A–Z</button>
-          <button class="btn btn-ghost h-9 px-3 py-0 text-xs" type="button">
-            In your workspaces
-          </button>
-        </div>
-      </div>
-
       <!-- Coworker Grid -->
       <div class="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
         <!-- Coworker Card -->
@@ -375,6 +365,7 @@ getCoworkers()
               Profile
             </button>
 
+            <!-- 🔥 NEW -->
             <button
               class="btn btn-ghost w-full h-8 px-3 py-0 text-xs"
               type="button"
@@ -386,31 +377,36 @@ getCoworkers()
         </div>
       </div>
 
-      <!-- Replace the "Load More" section with: -->
-      <div class="mt-8 flex items-center justify-center gap-2">
+      <!-- Pagination -->
+      <div
+        v-if="coworkers?.pagination?.last_page > 1"
+        class="mt-8 flex items-center justify-center gap-2"
+      >
         <button
           class="btn btn-ghost h-9 px-3 py-0 text-xs"
           type="button"
-          @click="changePage((Number(filters.page) || 1) - 1)"
+          @click="changePage(Number(filters.page) - 1)"
         >
           ← Previous
         </button>
+
         <div class="flex gap-1">
           <button
-            v-for="i in pages"
-            :key="i"
+            v-for="p in pages"
+            :key="p"
             class="btn h-9 px-3 py-0 text-xs"
-            :class="coworkers?.pagination?.current_page === i ? 'btn-primary' : 'btn-ghost'"
-            @click="changePage(Number(i) || 1)"
+            :class="coworkers?.pagination?.current_page === p ? 'btn-primary' : 'btn-ghost'"
             type="button"
+            @click="changePage(p)"
           >
-            {{ i }}
+            {{ p }}
           </button>
         </div>
+
         <button
           class="btn btn-ghost h-9 px-3 py-0 text-xs"
           type="button"
-          @click="changePage((Number(filters.page) || 1) + 1)"
+          @click="changePage(Number(filters.page) + 1)"
         >
           Next →
         </button>
