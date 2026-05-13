@@ -26,15 +26,15 @@ async function handleResponse(response: Response) {
         await router.push('/login')
       }
     }
-    if (response.status == 403) {
-      if (current !== '/workspaces') {
-        if (document.referrer) {
-          router.back()
-        } else {
-          await router.push('/workspaces')
-        }
-      }
-    }
+    // if (response.status == 403) {
+    //   if (current !== '/workspaces') {
+    //     if (document.referrer) {
+    //       await router.back()
+    //     } else {
+    //       await router.push('/workspaces')
+    //     }
+    //   }
+    // }
     return { data, error: true, status:response.status }
   } else {
     alert('Server error')

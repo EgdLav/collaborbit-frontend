@@ -22,6 +22,7 @@ type DraggedTask = {
 const route = useRoute()
 const router = useRouter()
 const showModal = ref(false)
+const showDeleteModal = ref(false)
 const draggedTask = ref<DraggedTask | null>(null)
 const isDragging = ref(false)
 
@@ -147,8 +148,9 @@ getWorkspace()
               </p>
             </header>
             <div class="space-y-2 p-3">
-              <article
-                class="rounded-[10px] border card jump border-dashed border-[color:var(--border)] bg-[rgba(0,0,0,0.18)] px-3 py-2"
+              <router-link
+                :to="'/workspace/' + workspace?.id + '/category/' + category.id + '/task/' + task.id"
+                class="rounded-[10px] border block card jump border-dashed border-[color:var(--border)] bg-[rgba(0,0,0,0.18)] px-3 py-2"
                 v-for="task in category?.tasks"
                 :key="task?.id"
                 draggable="true"
@@ -160,14 +162,14 @@ getWorkspace()
                 <p class="mt-2 text-xs text-[color:var(--text-2)]">
                   {{ task.executor.first_name }} · {{ task.due_date }}
                 </p>
-              </article>
+              </router-link>
               <article
                 class="rounded-[10px] border border-dashed border-[color:var(--border)] bg-[rgba(0,0,0,0.18)]"
               >
                 <router-link
                   :to="'/create-task/' + workspace?.id + '/' + category?.id"
                   class="btn btn-primary w-full text-center px-3 py-2"
-                  >Add task</router-link
+                >Add task</router-link
                 >
               </article>
             </div>

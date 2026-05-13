@@ -88,6 +88,7 @@ onMounted(() =>
             type="text"
             placeholder="e.g., Implement authentication"
             name="name"
+            autocomplete="off"
           />
         </label>
 
@@ -110,7 +111,6 @@ onMounted(() =>
             value="default.png"
             name="preview"
           />
-          <span class="help mt-1 block">Имя файла превью.</span>
         </label>
 
         <label class="block">

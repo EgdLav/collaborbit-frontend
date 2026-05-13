@@ -32,7 +32,7 @@ async function logout() {
     <div class="mx-auto max-w-6xl px-4 py-3">
       <div class="flex items-center justify-between gap-4">
         <!-- LOGO -->
-        <router-link class="flex items-center gap-2" to="/workspaces">
+        <router-link class="logo-link flex items-center gap-2" to="/workspaces">
           <span
             class="inline-flex h-8 w-8 items-center justify-center rounded-[10px] border border-[color:var(--border)] bg-[color:var(--panel)] font-mono text-xs"
           >
@@ -87,7 +87,7 @@ async function logout() {
                   v-if="showMenu"
                   class="menu flex flex-col gap-2 bg-white text-gray-800 p-3 rounded-lg shadow-lg border border-gray-200"
                 >
-                  <router-link to="/my_profile" class="btn btn-ghost" @click="showMenu = false">
+                  <router-link to="/my-profile" class="btn btn-ghost" @click="showMenu = false">
                     Profile
                   </router-link>
 

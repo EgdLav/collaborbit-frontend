@@ -252,6 +252,10 @@ body {
   color: rgb(var(--accent-rgb) / 1);
   text-shadow: 0 0 10px rgb(var(--accent-rgb) / 0.35);
 }
+.logo-link.router-link-active {
+  color: inherit;
+  text-shadow: none;
+}
 /* Layout helpers (reusable blocks) */
 .app-shell {
   min-height: 100vh;

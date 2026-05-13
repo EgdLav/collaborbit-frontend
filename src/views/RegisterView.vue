@@ -2,7 +2,29 @@
 import { onMounted, ref } from 'vue'
 import { $fetch } from '@/fetch/fetch.ts'
 import { notify } from '@/services/notify.ts'
-
+const departments = [
+  'Backend Development',
+  'Frontend Development',
+  'Engineering',
+  'Mobile Development',
+  'DevOps',
+  'Quality Assurance',
+  'Data Engineering',
+  'Data Science',
+  'Product Management',
+  'UI/UX Design',
+  'Graphic Design',
+  'Research & Analytics',
+  'Marketing',
+  'Sales',
+  'Business Development',
+  'Human Resources',
+  'Finance',
+  'Legal',
+  'Operations',
+  'Public Relations',
+  'Copywriting',
+]
 async function submit(event: Event) {
   document.querySelectorAll('.error').forEach((e) => e.remove())
 
@@ -130,27 +152,7 @@ onMounted(() =>{
             </label>
             <select class="input" id="department" name="department">
               <option value="">Select department</option>
-              <option>Backend Development</option>
-              <option>Frontend Development</option>
-              <option>Engineering</option>
-              <option>Mobile Development</option>
-              <option>DevOps</option>
-              <option>Quality Assurance</option>
-              <option>Data Engineering</option>
-              <option>Data Science</option>
-              <option>Product Management</option>
-              <option>UI/UX Design</option>
-              <option>Graphic Design</option>
-              <option>Research & Analytics</option>
-              <option>Marketing</option>
-              <option>Sales</option>
-              <option>Business Development</option>
-              <option>Human Resources</option>
-              <option>Finance</option>
-              <option>Legal</option>
-              <option>Operations</option>
-              <option>Public Relations</option>
-              <option>Copywriting</option>
+              <option v-for="dep in departments" :key="dep" :value="dep">{{dep}}</option>
             </select>
           </div>
 

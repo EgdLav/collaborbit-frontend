@@ -29,6 +29,15 @@ await getInvitations()
     </section>
 
     <section class="mt-4 space-y-3">
+
+      <div
+        v-if="!invitations?.length"
+        class="card p-10 flex flex-col items-center justify-center gap-2 text-center"
+      >
+        <p class="text-sm text-[color:var(--text-2)]">no pending invites</p>
+        <p class="prompt">when someone invites you to a workspace, it will appear here</p>
+      </div>
+
       <article class="card p-4" v-for="invite in invitations">
         <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <div>

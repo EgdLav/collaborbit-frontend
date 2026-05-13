@@ -60,7 +60,7 @@ export const router = createRouter({
       component: () => import('@/views/ChatView.vue'),
     },
     {
-      path: '/my_profile',
+      path: '/my-profile',
       component: () => import('@/views/MyProfileView.vue'),
     },
     {
@@ -68,8 +68,12 @@ export const router = createRouter({
       component: () => import('@/views/ProfileView.vue'),
     },
     {
-      path: '/tasks',
-      component: () => import('@/views/TasksView.vue'),
+      path: '/workspace/:workspace_id/category/:category_id/task/:id',
+      component: () => import('@/views/TaskView.vue'),
+    },
+    {
+      path: '/workspace/:workspace_id/category/:category_id/task/:id/update',
+      component: () => import('@/views/TaskUpdate.vue'),
     },
     {
       path: '/:pathMatch(.*)*',

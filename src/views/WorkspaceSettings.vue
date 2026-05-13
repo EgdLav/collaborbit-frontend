@@ -19,7 +19,7 @@ const showModal = ref(false)
 
 async function back() {
   if (document.referrer) {
-    router.back()
+    await router.back()
   } else {
     await router.push('/workspaces')
   }
@@ -147,16 +147,16 @@ getWorkspace()
               Save changes
             </button>
 
+            <button class="btn btn-ghost h-9 px-3 py-0 text-sm" type="button" @click="back">
+              Exit without changes
+            </button>
+
             <button
-              class="btn btn-danger h-9 px-3 py-0 text-sm"
+              class="ml-auto h-9 px-3 text-sm text-red-400 hover:text-red-300 opacity-60 hover:opacity-100 transition"
               type="button"
               @click="showModal = true"
             >
               Delete workspace
-            </button>
-
-            <button class="btn btn-ghost h-9 px-3 py-0 text-sm" type="button" @click="back">
-              Exit without changes
             </button>
           </div>
         </article>
@@ -167,7 +167,7 @@ getWorkspace()
 
           <p class="mt-2 text-sm text-[color:var(--text-1)]">
             Are you sure you want to delete <b>{{ workspace.name }}</b
-            >?
+          >?
           </p>
 
           <p class="mt-1 text-xs text-[color:var(--text-2)]">This action cannot be undone.</p>
