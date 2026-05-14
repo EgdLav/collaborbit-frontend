@@ -4,13 +4,18 @@ import { $fetch } from '@/fetch/fetch.ts'
 import { useRoute, useRouter } from 'vue-router'
 import { notify } from '@/services/notify.ts'
 import BaseModal from '@/components/BaseModal.vue'
+import { useAuthStore } from '@/stores/authStore.ts'
 
 const route = useRoute()
 const router = useRouter()
+const auth = useAuthStore()
 
 const task = ref<any>(null)
 const workspace = ref<any>(null)
 const showDeleteModal = ref(false)
+
+const isCreator = () => String(task.value?.creator.id) === String(auth.id)
+const isExecutor = () => String(task.value?.executor.id) === String(auth.id)
 
 async function getData() {
   const [wsRes, taskRes] = await Promise.all([
@@ -89,7 +94,13 @@ getData()
     <template v-else>
       <section class="card p-4 sm:p-5">
         <p class="prompt"><b>task</b> / edit</p>
-        <h1 class="mt-1 mb-3 text-lg font-semibold">Edit Task</h1>
+        <div class="mt-1 flex flex-wrap items-center justify-between gap-3">
+          <h1 class="text-lg font-semibold">Edit Task</h1>
+          <div class="flex flex-wrap gap-1.5">
+            <span v-if="isCreator()" class="badge-role badge-creator">CREATOR</span>
+            <span v-if="isExecutor()" class="badge-role badge-executor">EXECUTOR</span>
+          </div>
+        </div>
 
         <div class="mb-5 flex flex-wrap items-center gap-3">
           <div class="flex items-center gap-2 rounded-full border border-[color:rgb(var(--accent-rgb)/0.28)] bg-[color:rgb(var(--accent-rgb)/0.06)] px-3 py-1.5">
@@ -149,7 +160,7 @@ getData()
                 v-for="member in workspace?.members"
                 :key="member.id"
                 :value="member.id"
-                :selected="member.id === task.executor_id"
+                :selected="member.id === task.executor.id"
               >
                 {{ member.first_name }}
               </option>
@@ -162,7 +173,7 @@ getData()
           </label>
 
           <!-- ACTIONS — WorkspaceSettings style -->
-          <div class="flex flex-wrap items-center gap-2 pt-1 border-t border-[color:var(--border)]">
+          <div class="flex flex-wrap items-center gap-2 pt-3 border-t border-[color:var(--border)]">
             <button class="btn btn-primary h-9 px-3 py-0 text-sm" type="submit">
               Save changes
             </button>
@@ -210,4 +221,28 @@ getData()
   </main>
 </template>
 
-<style scoped></style>
+<style scoped>
+.badge-role {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 8px;
+  border-radius: 6px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  border: 1px solid;
+  font-family: var(--mono);
+}
+
+.badge-creator {
+  color: rgb(var(--accent-2-rgb) / 0.9);
+  background: rgb(var(--accent-2-rgb) / 0.08);
+  border-color: rgb(var(--accent-2-rgb) / 0.28);
+}
+
+.badge-executor {
+  color: rgb(var(--accent-rgb) / 0.9);
+  background: rgb(var(--accent-rgb) / 0.08);
+  border-color: rgb(var(--accent-rgb) / 0.28);
+}
+</style>

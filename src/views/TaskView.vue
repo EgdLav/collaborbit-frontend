@@ -11,7 +11,6 @@ const auth = useAuthStore()
 const task = ref<any>(null)
 
 function formatDate(d: string | null) {
-  console.log(d)
   if (!d) return '—'
   return new Date(d).toLocaleDateString('en-GB', {
     day: '2-digit',
@@ -32,6 +31,10 @@ function fileName(path: string) {
 function fileExt(path: string) {
   return path.split('.').pop()?.toUpperCase() ?? 'FILE'
 }
+
+const isCreator = () => String(task.value?.creator.id) === String(auth.id)
+const isExecutor = () => String(task.value?.executor.id) === String(auth.id)
+const canEdit = () => isCreator() || task.value?.workspace?.is_owner
 
 async function getTask() {
   const res = await $fetch(
@@ -55,6 +58,8 @@ getTask()
 
       <!-- HEADER -->
       <section class="card p-5">
+
+        <!-- breadcrumb pills -->
         <div class="mb-4 flex flex-wrap items-center gap-2">
           <div class="flex items-center gap-2 rounded-full border border-[color:rgb(var(--accent-rgb)/0.28)] bg-[color:rgb(var(--accent-rgb)/0.06)] px-3 py-1.5">
             <span class="text-xs text-[color:rgb(var(--accent-rgb)/0.8)]">WORKSPACE:</span>
@@ -67,8 +72,19 @@ getTask()
           </div>
         </div>
 
-        <p class="prompt"><b>task</b> / view</p>
-        <h1 class="mt-1 text-xl font-semibold">{{ task.name }}</h1>
+        <!-- title row with role badges -->
+        <div class="flex flex-wrap items-start justify-between gap-3">
+          <div>
+            <p class="prompt"><b>task</b> / view</p>
+            <h1 class="mt-1 text-xl font-semibold">{{ task.name }}</h1>
+          </div>
+
+          <!-- role badges -->
+          <div class="flex flex-wrap gap-1.5">
+            <span v-if="isCreator()" class="badge-role badge-creator">CREATOR</span>
+            <span v-if="isExecutor()" class="badge-role badge-executor">EXECUTOR</span>
+          </div>
+        </div>
 
         <p
           v-if="task.description"
@@ -81,9 +97,9 @@ getTask()
         <!-- actions -->
         <div class="mt-5 flex flex-wrap items-center gap-2 border-t border-[color:var(--border)] pt-4">
           <router-link
-            v-if="task.creator_id == auth.id || task.executor_id == auth.id || task.workspace?.is_owner"
+            v-if="canEdit()"
             class="btn btn-primary h-9 px-3 py-0 text-sm"
-            :to="`/update-task/${task.workspace_id}/${task.category_id}/${task.id}`"
+            :to="`/workspace/${task.workspace.id}/category/${task.category.id}/task/${task.id}/update`"
           >
             Edit task
           </router-link>
@@ -124,9 +140,7 @@ getTask()
               :src="task.creator.avatar"
               class="h-5 w-5 rounded-[6px] border border-[color:var(--border)] object-cover flex-none"
             />
-            <p class="text-sm font-semibold truncate">
-              {{ task.creator?.first_name ?? '—' }}
-            </p>
+            <p class="text-sm font-semibold truncate">{{ task.creator?.first_name ?? '—' }}</p>
           </div>
         </div>
 
@@ -138,9 +152,7 @@ getTask()
               :src="task.executor.avatar"
               class="h-5 w-5 rounded-[6px] border border-[color:var(--border)] object-cover flex-none"
             />
-            <p class="text-sm font-semibold truncate">
-              {{ task.executor?.first_name ?? '—' }}
-            </p>
+            <p class="text-sm font-semibold truncate">{{ task.executor?.first_name ?? '—' }}</p>
           </div>
         </div>
 
@@ -161,7 +173,9 @@ getTask()
 
       <!-- FILES -->
       <section v-if="task.files?.length" class="mt-4 card p-4">
-        <h2 class="text-sm font-semibold">Files <span class="text-xs text-[color:var(--text-2)]">{{ task.files.length }}</span></h2>
+        <h2 class="text-sm font-semibold">
+          Files <span class="text-xs text-[color:var(--text-2)]">{{ task.files.length }}</span>
+        </h2>
         <div class="mt-3 flex flex-col gap-2">
           <a
             v-for="(file, i) in task.files"
@@ -182,4 +196,28 @@ getTask()
   </main>
 </template>
 
-<style scoped></style>
+<style scoped>
+.badge-role {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 8px;
+  border-radius: 6px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  border: 1px solid;
+  font-family: var(--mono);
+}
+
+.badge-creator {
+  color: rgb(var(--accent-2-rgb) / 0.9);
+  background: rgb(var(--accent-2-rgb) / 0.08);
+  border-color: rgb(var(--accent-2-rgb) / 0.28);
+}
+
+.badge-executor {
+  color: rgb(var(--accent-rgb) / 0.9);
+  background: rgb(var(--accent-rgb) / 0.08);
+  border-color: rgb(var(--accent-rgb) / 0.28);
+}
+</style>

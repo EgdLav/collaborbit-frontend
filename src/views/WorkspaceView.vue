@@ -110,7 +110,7 @@ getWorkspace()
       <aside class="card p-4 xl:col-span-1">
         <div class="flex items-center justify-between">
           <h2 class="text-sm font-semibold">Coworkers</h2>
-          <button class="btn btn-ghost h-8 px-2 py-0 text-xs" type="button">Invite</button>
+          <router-link class="btn btn-ghost h-8 px-2 py-0 text-xs" type="button" to="/find-coworkers">Invite</router-link>
         </div>
         <div class="mt-3 space-y-2">
           <article
@@ -205,7 +205,7 @@ getWorkspace()
               placeholder="e.g. Development, Design, Marketing"
               required
               aria-required="true"
-              name="name"
+              name="name"f
             />
           </div>
 
