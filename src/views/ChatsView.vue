@@ -69,7 +69,6 @@ onMounted(async () => {
   await getChats()
   chats.value.forEach(chat => {
     connectWebSocket(chat.id)
-    console.log(chat.id);
   })
 })
 onBeforeUnmount(() => {
@@ -202,8 +201,14 @@ onBeforeUnmount(() => {
           <!-- info -->
           <div class="flex-1 min-w-0">
             <div class="flex items-center justify-between gap-2">
-              <p class="text-sm font-semibold truncate">{{ chat.name }}</p>
-              <span class="timestamp flex-none">{{ chat.last_message_time }}</span>
+              <p class="text-sm font-semibold truncate">
+                {{
+                  chat.type === 'private'
+                    ? (chat.other_user?.first_name + ' ' + (chat.other_user?.last_name ?? '')).trim()
+                    : chat.workspace?.name ?? '—'
+                }}
+              </p>
+              <span class="timestamp flex-none">{{ chat.last_message?.created_at ? new Date(chat.last_message.created_at).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }) : '' }}</span>
             </div>
 
             <div class="mt-0.5 flex items-center justify-between gap-2">

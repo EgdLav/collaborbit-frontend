@@ -218,7 +218,17 @@ onBeforeUnmount(() => {
         </button>
 
         <div class="flex-1">
-          <p class="prompt"><b>chat</b> / messages</p>
+          <p class="prompt"><b>chat</b> /
+            <span v-if="chat?.type === 'private'">
+              {{ (chat.other_user?.first_name + ' ' + (chat.other_user?.last_name ?? '')).trim() }}
+            </span>
+            <span v-else-if="chat?.type === 'workspace'">
+              # {{ chat.workspace?.name }}
+            </span>
+          </p>
+          <p class="mt-0.5 text-xs text-[color:var(--text-2)]">
+            {{ chat?.type === 'private' ? '@ private' : '# workspace' }}
+          </p>
         </div>
 
         <span class="kbd text-xs">

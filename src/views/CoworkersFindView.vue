@@ -3,10 +3,12 @@ import { computed, ref } from 'vue'
 import { $fetch } from '@/fetch/fetch.ts'
 import BaseModal from '@/components/BaseModal.vue'
 import { notify } from '@/services/notify.ts'
-import {useAuthStore} from "@/stores/authStore";
+import { useAuthStore } from '@/stores/authStore'
+import { useRouter } from 'vue-router'
 
 const coworkers = ref(null)
 const auth = useAuthStore()
+const router = useRouter()
 
 const filters = ref({
   department: '',
@@ -129,218 +131,218 @@ getCoworkers()
               />
               <span class="text-sm">{{dep}}</span>
             </label>
-<!--            <label class="flex items-center gap-2">-->
-<!--              <input-->
-<!--                type="radio"-->
-<!--                name="department"-->
-<!--                value="Backend Development"-->
-<!--                v-model="filters.department"-->
-<!--                @change="getCoworkers()"-->
-<!--              />-->
-<!--              <span class="text-sm">Backend Development</span>-->
-<!--            </label>-->
+            <!--            <label class="flex items-center gap-2">-->
+            <!--              <input-->
+            <!--                type="radio"-->
+            <!--                name="department"-->
+            <!--                value="Backend Development"-->
+            <!--                v-model="filters.department"-->
+            <!--                @change="getCoworkers()"-->
+            <!--              />-->
+            <!--              <span class="text-sm">Backend Development</span>-->
+            <!--            </label>-->
 
-<!--            <label class="flex items-center gap-2">-->
-<!--              <input-->
-<!--                type="radio"-->
-<!--                name="department"-->
-<!--                value="Frontend Development"-->
-<!--                v-model="filters.department"-->
-<!--                @change="getCoworkers()"-->
-<!--              />-->
-<!--              <span class="text-sm">Frontend Development</span>-->
-<!--            </label>-->
+            <!--            <label class="flex items-center gap-2">-->
+            <!--              <input-->
+            <!--                type="radio"-->
+            <!--                name="department"-->
+            <!--                value="Frontend Development"-->
+            <!--                v-model="filters.department"-->
+            <!--                @change="getCoworkers()"-->
+            <!--              />-->
+            <!--              <span class="text-sm">Frontend Development</span>-->
+            <!--            </label>-->
 
-<!--            <label class="flex items-center gap-2">-->
-<!--              <input-->
-<!--                type="radio"-->
-<!--                name="department"-->
-<!--                value="Engineering"-->
-<!--                v-model="filters.department"-->
-<!--                @change="getCoworkers()"-->
-<!--              />-->
-<!--              <span class="text-sm">Engineering</span>-->
-<!--            </label>-->
+            <!--            <label class="flex items-center gap-2">-->
+            <!--              <input-->
+            <!--                type="radio"-->
+            <!--                name="department"-->
+            <!--                value="Engineering"-->
+            <!--                v-model="filters.department"-->
+            <!--                @change="getCoworkers()"-->
+            <!--              />-->
+            <!--              <span class="text-sm">Engineering</span>-->
+            <!--            </label>-->
 
-<!--            <label class="flex items-center gap-2">-->
-<!--              <input-->
-<!--                type="radio"-->
-<!--                name="department"-->
-<!--                value="Mobile Development"-->
-<!--                v-model="filters.department"-->
-<!--                @change="getCoworkers()"-->
-<!--              />-->
-<!--              <span class="text-sm">Mobile Development</span>-->
-<!--            </label>-->
+            <!--            <label class="flex items-center gap-2">-->
+            <!--              <input-->
+            <!--                type="radio"-->
+            <!--                name="department"-->
+            <!--                value="Mobile Development"-->
+            <!--                v-model="filters.department"-->
+            <!--                @change="getCoworkers()"-->
+            <!--              />-->
+            <!--              <span class="text-sm">Mobile Development</span>-->
+            <!--            </label>-->
 
-<!--            <label class="flex items-center gap-2">-->
-<!--              <input-->
-<!--                type="radio"-->
-<!--                name="department"-->
-<!--                value="DevOps"-->
-<!--                v-model="filters.department"-->
-<!--                @change="getCoworkers()"-->
-<!--              />-->
-<!--              <span class="text-sm">DevOps</span>-->
-<!--            </label>-->
+            <!--            <label class="flex items-center gap-2">-->
+            <!--              <input-->
+            <!--                type="radio"-->
+            <!--                name="department"-->
+            <!--                value="DevOps"-->
+            <!--                v-model="filters.department"-->
+            <!--                @change="getCoworkers()"-->
+            <!--              />-->
+            <!--              <span class="text-sm">DevOps</span>-->
+            <!--            </label>-->
 
-<!--            <label class="flex items-center gap-2">-->
-<!--              <input-->
-<!--                type="radio"-->
-<!--                name="department"-->
-<!--                value="Quality Assurance"-->
-<!--                v-model="filters.department"-->
-<!--                @change="getCoworkers()"-->
-<!--              />-->
-<!--              <span class="text-sm">Quality Assurance</span>-->
-<!--            </label>-->
+            <!--            <label class="flex items-center gap-2">-->
+            <!--              <input-->
+            <!--                type="radio"-->
+            <!--                name="department"-->
+            <!--                value="Quality Assurance"-->
+            <!--                v-model="filters.department"-->
+            <!--                @change="getCoworkers()"-->
+            <!--              />-->
+            <!--              <span class="text-sm">Quality Assurance</span>-->
+            <!--            </label>-->
 
-<!--            <label class="flex items-center gap-2">-->
-<!--              <input-->
-<!--                type="radio"-->
-<!--                name="department"-->
-<!--                value="Data Engineering"-->
-<!--                v-model="filters.department"-->
-<!--                @change="getCoworkers()"-->
-<!--              />-->
-<!--              <span class="text-sm">Data Engineering</span>-->
-<!--            </label>-->
+            <!--            <label class="flex items-center gap-2">-->
+            <!--              <input-->
+            <!--                type="radio"-->
+            <!--                name="department"-->
+            <!--                value="Data Engineering"-->
+            <!--                v-model="filters.department"-->
+            <!--                @change="getCoworkers()"-->
+            <!--              />-->
+            <!--              <span class="text-sm">Data Engineering</span>-->
+            <!--            </label>-->
 
-<!--            <label class="flex items-center gap-2">-->
-<!--              <input-->
-<!--                type="radio"-->
-<!--                name="department"-->
-<!--                value="Data Science"-->
-<!--                v-model="filters.department"-->
-<!--                @change="getCoworkers()"-->
-<!--              />-->
-<!--              <span class="text-sm">Data Science</span>-->
-<!--            </label>-->
+            <!--            <label class="flex items-center gap-2">-->
+            <!--              <input-->
+            <!--                type="radio"-->
+            <!--                name="department"-->
+            <!--                value="Data Science"-->
+            <!--                v-model="filters.department"-->
+            <!--                @change="getCoworkers()"-->
+            <!--              />-->
+            <!--              <span class="text-sm">Data Science</span>-->
+            <!--            </label>-->
 
-<!--            <label class="flex items-center gap-2">-->
-<!--              <input-->
-<!--                type="radio"-->
-<!--                name="department"-->
-<!--                value="Product Management"-->
-<!--                v-model="filters.department"-->
-<!--                @change="getCoworkers()"-->
-<!--              />-->
-<!--              <span class="text-sm">Product Management</span>-->
-<!--            </label>-->
+            <!--            <label class="flex items-center gap-2">-->
+            <!--              <input-->
+            <!--                type="radio"-->
+            <!--                name="department"-->
+            <!--                value="Product Management"-->
+            <!--                v-model="filters.department"-->
+            <!--                @change="getCoworkers()"-->
+            <!--              />-->
+            <!--              <span class="text-sm">Product Management</span>-->
+            <!--            </label>-->
 
-<!--            <label class="flex items-center gap-2">-->
-<!--              <input-->
-<!--                type="radio"-->
-<!--                name="department"-->
-<!--                value="UI/UX Design"-->
-<!--                v-model="filters.department"-->
-<!--                @change="getCoworkers()"-->
-<!--              />-->
-<!--              <span class="text-sm">UI/UX Design</span>-->
-<!--            </label>-->
+            <!--            <label class="flex items-center gap-2">-->
+            <!--              <input-->
+            <!--                type="radio"-->
+            <!--                name="department"-->
+            <!--                value="UI/UX Design"-->
+            <!--                v-model="filters.department"-->
+            <!--                @change="getCoworkers()"-->
+            <!--              />-->
+            <!--              <span class="text-sm">UI/UX Design</span>-->
+            <!--            </label>-->
 
-<!--            <label class="flex items-center gap-2">-->
-<!--              <input-->
-<!--                type="radio"-->
-<!--                name="department"-->
-<!--                value="Graphic Design"-->
-<!--                v-model="filters.department"-->
-<!--                @change="getCoworkers()"-->
-<!--              />-->
-<!--              <span class="text-sm">Graphic Design</span>-->
-<!--            </label>-->
+            <!--            <label class="flex items-center gap-2">-->
+            <!--              <input-->
+            <!--                type="radio"-->
+            <!--                name="department"-->
+            <!--                value="Graphic Design"-->
+            <!--                v-model="filters.department"-->
+            <!--                @change="getCoworkers()"-->
+            <!--              />-->
+            <!--              <span class="text-sm">Graphic Design</span>-->
+            <!--            </label>-->
 
-<!--            <label class="flex items-center gap-2">-->
-<!--              <input-->
-<!--                type="radio"-->
-<!--                name="department"-->
-<!--                value="Research & Analytics"-->
-<!--                v-model="filters.department"-->
-<!--                @change="getCoworkers()"-->
-<!--              />-->
-<!--              <span class="text-sm">Research & Analytics</span>-->
-<!--            </label>-->
+            <!--            <label class="flex items-center gap-2">-->
+            <!--              <input-->
+            <!--                type="radio"-->
+            <!--                name="department"-->
+            <!--                value="Research & Analytics"-->
+            <!--                v-model="filters.department"-->
+            <!--                @change="getCoworkers()"-->
+            <!--              />-->
+            <!--              <span class="text-sm">Research & Analytics</span>-->
+            <!--            </label>-->
 
-<!--            <label class="flex items-center gap-2">-->
-<!--              <input-->
-<!--                type="radio"-->
-<!--                name="department"-->
-<!--                value="Marketing"-->
-<!--                v-model="filters.department"-->
-<!--                @change="getCoworkers()"-->
-<!--              />-->
-<!--              <span class="text-sm">Marketing</span>-->
-<!--            </label>-->
+            <!--            <label class="flex items-center gap-2">-->
+            <!--              <input-->
+            <!--                type="radio"-->
+            <!--                name="department"-->
+            <!--                value="Marketing"-->
+            <!--                v-model="filters.department"-->
+            <!--                @change="getCoworkers()"-->
+            <!--              />-->
+            <!--              <span class="text-sm">Marketing</span>-->
+            <!--            </label>-->
 
-<!--            <label class="flex items-center gap-2">-->
-<!--              <input type="radio" name="department" value="Sales" v-model="filters.department" @change="getCoworkers()"/>-->
-<!--              <span class="text-sm">Sales</span>-->
-<!--            </label>-->
+            <!--            <label class="flex items-center gap-2">-->
+            <!--              <input type="radio" name="department" value="Sales" v-model="filters.department" @change="getCoworkers()"/>-->
+            <!--              <span class="text-sm">Sales</span>-->
+            <!--            </label>-->
 
-<!--            <label class="flex items-center gap-2">-->
-<!--              <input-->
-<!--                type="radio"-->
-<!--                name="department"-->
-<!--                value="Business Development"-->
-<!--                v-model="filters.department"-->
-<!--                @change="getCoworkers()"-->
-<!--              />-->
-<!--              <span class="text-sm">Business Development</span>-->
-<!--            </label>-->
+            <!--            <label class="flex items-center gap-2">-->
+            <!--              <input-->
+            <!--                type="radio"-->
+            <!--                name="department"-->
+            <!--                value="Business Development"-->
+            <!--                v-model="filters.department"-->
+            <!--                @change="getCoworkers()"-->
+            <!--              />-->
+            <!--              <span class="text-sm">Business Development</span>-->
+            <!--            </label>-->
 
-<!--            <label class="flex items-center gap-2">-->
-<!--              <input-->
-<!--                type="radio"-->
-<!--                name="department"-->
-<!--                value="Human Resources"-->
-<!--                v-model="filters.department"-->
-<!--                @change="getCoworkers()"-->
-<!--              />-->
-<!--              <span class="text-sm">Human Resources</span>-->
-<!--            </label>-->
+            <!--            <label class="flex items-center gap-2">-->
+            <!--              <input-->
+            <!--                type="radio"-->
+            <!--                name="department"-->
+            <!--                value="Human Resources"-->
+            <!--                v-model="filters.department"-->
+            <!--                @change="getCoworkers()"-->
+            <!--              />-->
+            <!--              <span class="text-sm">Human Resources</span>-->
+            <!--            </label>-->
 
-<!--            <label class="flex items-center gap-2">-->
-<!--              <input type="radio" name="department" value="Finance" v-model="filters.department" @change="getCoworkers()"/>-->
-<!--              <span class="text-sm">Finance</span>-->
-<!--            </label>-->
+            <!--            <label class="flex items-center gap-2">-->
+            <!--              <input type="radio" name="department" value="Finance" v-model="filters.department" @change="getCoworkers()"/>-->
+            <!--              <span class="text-sm">Finance</span>-->
+            <!--            </label>-->
 
-<!--            <label class="flex items-center gap-2">-->
-<!--              <input type="radio" name="department" value="Legal" v-model="filters.department" @change="getCoworkers()"/>-->
-<!--              <span class="text-sm">Legal</span>-->
-<!--            </label>-->
+            <!--            <label class="flex items-center gap-2">-->
+            <!--              <input type="radio" name="department" value="Legal" v-model="filters.department" @change="getCoworkers()"/>-->
+            <!--              <span class="text-sm">Legal</span>-->
+            <!--            </label>-->
 
-<!--            <label class="flex items-center gap-2">-->
-<!--              <input-->
-<!--                type="radio"-->
-<!--                name="department"-->
-<!--                value="Operations"-->
-<!--                v-model="filters.department"-->
-<!--                @change="getCoworkers()"-->
-<!--              />-->
-<!--              <span class="text-sm">Operations</span>-->
-<!--            </label>-->
+            <!--            <label class="flex items-center gap-2">-->
+            <!--              <input-->
+            <!--                type="radio"-->
+            <!--                name="department"-->
+            <!--                value="Operations"-->
+            <!--                v-model="filters.department"-->
+            <!--                @change="getCoworkers()"-->
+            <!--              />-->
+            <!--              <span class="text-sm">Operations</span>-->
+            <!--            </label>-->
 
-<!--            <label class="flex items-center gap-2">-->
-<!--              <input-->
-<!--                type="radio"-->
-<!--                name="department"-->
-<!--                value="Public Relations"-->
-<!--                v-model="filters.department"-->
-<!--                @change="getCoworkers()"-->
-<!--              />-->
-<!--              <span class="text-sm">Public Relations</span>-->
-<!--            </label>-->
+            <!--            <label class="flex items-center gap-2">-->
+            <!--              <input-->
+            <!--                type="radio"-->
+            <!--                name="department"-->
+            <!--                value="Public Relations"-->
+            <!--                v-model="filters.department"-->
+            <!--                @change="getCoworkers()"-->
+            <!--              />-->
+            <!--              <span class="text-sm">Public Relations</span>-->
+            <!--            </label>-->
 
-<!--            <label class="flex items-center gap-2">-->
-<!--              <input-->
-<!--                type="radio"-->
-<!--                name="department"-->
-<!--                value="Copywriting"-->
-<!--                v-model="filters.department"-->
-<!--                @change="getCoworkers()"-->
-<!--              />-->
-<!--              <span class="text-sm">Copywriting</span>-->
-<!--            </label>-->
+            <!--            <label class="flex items-center gap-2">-->
+            <!--              <input-->
+            <!--                type="radio"-->
+            <!--                name="department"-->
+            <!--                value="Copywriting"-->
+            <!--                v-model="filters.department"-->
+            <!--                @change="getCoworkers()"-->
+            <!--              />-->
+            <!--              <span class="text-sm">Copywriting</span>-->
+            <!--            </label>-->
           </div>
         </div>
       </div>
@@ -387,6 +389,7 @@ getCoworkers()
             <button
               class="btn btn-primary w-full h-8 px-3 py-0 text-xs"
               type="button"
+              @click="router.push(`/chat/${coworker.id}`)"
             >
               Message
             </button>
@@ -394,6 +397,7 @@ getCoworkers()
             <button
               class="btn btn-ghost w-full h-8 px-3 py-0 text-xs"
               type="button"
+              @click="router.push(`/profile/${coworker.id}`)"
             >
               Profile
             </button>

@@ -4,6 +4,9 @@ import { $fetch } from '@/fetch/fetch.ts'
 import { useRoute, useRouter } from 'vue-router'
 import { notify } from '@/services/notify.ts'
 import BaseModal from '@/components/BaseModal.vue'
+import { useAuthStore } from '@/stores/authStore.ts'
+
+const auth = useAuthStore()
 
 const workspace = ref({
   name: '',
@@ -150,17 +153,30 @@ getWorkspace()
             <div class="space-y-2 p-3">
               <router-link
                 :to="'/workspace/' + workspace?.id + '/category/' + category.id + '/task/' + task.id"
-                class="rounded-[10px] border block card jump border-dashed border-[color:var(--border)] bg-[rgba(0,0,0,0.18)] px-3 py-2"
+                class="task-card rounded-[10px] border block card jump border-dashed border-[color:var(--border)] bg-[rgba(0,0,0,0.18)] px-3 py-2"
                 v-for="task in category?.tasks"
                 :key="task?.id"
                 draggable="true"
                 @dragstart="onDragStart($event, task, category)"
                 @dragend="onDragEnd"
               >
-                <p class="text-sm font-semibold">{{ task.name }}</p>
-                <p class="text-sm text-[color:var(--text-2)]">{{ task.description }}</p>
+                <!-- top row: name + badges -->
+                <div class="flex items-start justify-between gap-2">
+                  <p class="text-sm font-semibold leading-snug">{{ task.name }}</p>
+                  <div class="flex flex-shrink-0 gap-1 pt-0.5">
+                    <span
+                      v-if="String(task.creator.id) === String(auth.id)"
+                      class="task-badge task-badge--creator"
+                    >CREATOR</span>
+                    <span
+                      v-if="String(task.executor.id) === String(auth.id)"
+                      class="task-badge task-badge--executor"
+                    >EXECUTOR</span>
+                  </div>
+                </div>
+                <p class="mt-1 text-xs text-[color:var(--text-2)] line-clamp-1">{{ task.description }}</p>
                 <p class="mt-2 text-xs text-[color:var(--text-2)]">
-                  {{ task.executor.first_name }} · {{ task.due_date }}
+                  {{ task.executor?.first_name }} · {{ task.due_date }}
                 </p>
               </router-link>
               <article
@@ -205,7 +221,7 @@ getWorkspace()
               placeholder="e.g. Development, Design, Marketing"
               required
               aria-required="true"
-              name="name"f
+              name="name"
             />
           </div>
 
@@ -221,4 +237,31 @@ getWorkspace()
   </main>
 </template>
 
-<style scoped></style>
+<style scoped>
+.task-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 1px 5px;
+  border-radius: 5px;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  border: 1px solid;
+  font-family: var(--mono);
+  line-height: 1.6;
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+.task-badge--creator {
+  color: rgb(var(--accent-2-rgb) / 0.9);
+  background: rgb(var(--accent-2-rgb) / 0.08);
+  border-color: rgb(var(--accent-2-rgb) / 0.28);
+}
+
+.task-badge--executor {
+  color: rgb(var(--accent-rgb) / 0.9);
+  background: rgb(var(--accent-rgb) / 0.08);
+  border-color: rgb(var(--accent-rgb) / 0.28);
+}
+</style>
