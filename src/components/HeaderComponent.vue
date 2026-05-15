@@ -53,7 +53,6 @@ function closeMobileNav() {
           <router-link class="link" to="/invites">Invites</router-link>
           <router-link class="link" to="/chats">Chats</router-link>
           <router-link class="link" to="/find-coworkers">Find coworkers</router-link>
-          <router-link class="link" to="/tasks">Tasks</router-link>
         </nav>
 
         <!-- RIGHT -->
@@ -157,24 +156,4 @@ function closeMobileNav() {
   </header>
 </template>
 
-<style scoped>
-.fade-enter-active,
-.fade-leave-active {
-  transition: all 0.15s ease;
-}
-.fade-enter-from,
-.fade-leave-to {
-  opacity: 0;
-  transform: translateY(-5px);
-}
 
-.mobile-nav-enter-active,
-.mobile-nav-leave-active {
-  transition: all 0.18s ease;
-}
-.mobile-nav-enter-from,
-.mobile-nav-leave-to {
-  opacity: 0;
-  transform: translateY(-6px);
-}
-</style>

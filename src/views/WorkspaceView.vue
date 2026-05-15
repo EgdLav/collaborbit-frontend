@@ -234,6 +234,7 @@ function isOverdue(d: string | null) {
             <input
               id="category-name"
               type="text"
+              autocomplete="off"
               class="input"
               placeholder="e.g. Development, Design, Marketing"
               required
@@ -254,31 +255,4 @@ function isOverdue(d: string | null) {
   </main>
 </template>
 
-<style scoped>
-.task-badge {
-  display: inline-flex;
-  align-items: center;
-  padding: 1px 5px;
-  border-radius: 5px;
-  font-size: 9px;
-  font-weight: 700;
-  letter-spacing: 0.06em;
-  border: 1px solid;
-  font-family: var(--mono);
-  line-height: 1.6;
-  white-space: nowrap;
-  pointer-events: none;
-}
 
-.task-badge--creator {
-  color: rgb(var(--accent-2-rgb) / 0.9);
-  background: rgb(var(--accent-2-rgb) / 0.08);
-  border-color: rgb(var(--accent-2-rgb) / 0.28);
-}
-
-.task-badge--executor {
-  color: rgb(var(--accent-rgb) / 0.9);
-  background: rgb(var(--accent-rgb) / 0.08);
-  border-color: rgb(var(--accent-rgb) / 0.28);
-}
-</style>

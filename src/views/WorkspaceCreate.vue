@@ -46,12 +46,12 @@ onMounted(() =>
       <form class="mt-5 space-y-4" @submit.prevent="submit">
         <label class="block">
           <span class="mb-1.5 block text-sm text-[color:var(--text-1)]">Workspace name</span>
-          <input class="input" type="text" placeholder="Cosmo startup" name="name" />
+          <input class="input" type="text" placeholder="Cosmo startup" name="name" autocomplete="off" />
         </label>
 
         <label class="block">
           <span class="mb-1.5 block text-sm text-[color:var(--text-1)]">Slug</span>
-          <input class="input" type="text" placeholder="cosmo-startup" name="slug" />
+          <input class="input" type="text" placeholder="cosmo-startup" name="slug" autocomplete="off" />
           <span class="help mt-1 block">Используется в URL и invite links.</span>
         </label>
 

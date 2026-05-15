@@ -91,12 +91,12 @@ getWorkspace()
           <div class="mt-3 grid grid-cols-1 gap-3 sm:grid-cols-2">
             <label class="block">
               <span class="mb-1.5 block text-sm text-[color:var(--text-1)]">Workspace name</span>
-              <input class="input" type="text" name="name" v-model="workspace.name" />
+              <input class="input" type="text" name="name" v-model="workspace.name" autocomplete="off" />
             </label>
 
             <label class="block">
               <span class="mb-1.5 block text-sm text-[color:var(--text-1)]">Slug</span>
-              <input class="input" type="text" v-model="workspace.slug" name="slug" />
+              <input class="input" type="text" v-model="workspace.slug" name="slug" autocomplete="off" />
             </label>
           </div>
 
@@ -187,24 +187,4 @@ getWorkspace()
   </main>
 </template>
 
-<style scoped>
-.modal {
-  max-width: 300px;
-  background: rgb(10 10 10);
-}
 
-.modal-enter-active,
-.modal-leave-active {
-  transition: all 0.18s ease;
-}
-
-.modal-enter-from {
-  opacity: 0;
-  transform: translateY(-10px);
-}
-
-.modal-leave-to {
-  opacity: 0;
-  transform: translateY(-6px);
-}
-</style>

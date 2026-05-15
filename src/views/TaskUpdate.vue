@@ -221,28 +221,4 @@ getData()
   </main>
 </template>
 
-<style scoped>
-.badge-role {
-  display: inline-flex;
-  align-items: center;
-  padding: 2px 8px;
-  border-radius: 6px;
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 0.06em;
-  border: 1px solid;
-  font-family: var(--mono);
-}
 
-.badge-creator {
-  color: rgb(var(--accent-2-rgb) / 0.9);
-  background: rgb(var(--accent-2-rgb) / 0.08);
-  border-color: rgb(var(--accent-2-rgb) / 0.28);
-}
-
-.badge-executor {
-  color: rgb(var(--accent-rgb) / 0.9);
-  background: rgb(var(--accent-rgb) / 0.08);
-  border-color: rgb(var(--accent-rgb) / 0.28);
-}
-</style>

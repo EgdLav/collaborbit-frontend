@@ -25,24 +25,4 @@ function close() {
   </transition>
 </template>
 
-<style scoped>
-.modal {
-  max-width: 320px;
-  background: rgb(10 10 10);
-}
 
-.modal-enter-active,
-.modal-leave-active {
-  transition: all 0.18s ease;
-}
-
-.modal-enter-from {
-  opacity: 0;
-  transform: translateY(-10px);
-}
-
-.modal-leave-to {
-  opacity: 0;
-  transform: translateY(-6px);
-}
-</style>

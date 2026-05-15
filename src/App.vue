@@ -14,21 +14,4 @@ import HeaderComponent from '@/components/HeaderComponent.vue'
   </Suspense>
 </template>
 
-<style scoped>
-.page-enter-active,
-.page-leave-active {
-  transition: all 0.20s ease;
-}
 
-.page-enter-from {
-  opacity: 0;
-  transform: translateY(6px);
-  filter: blur(4px);
-}
-
-.page-leave-to {
-  opacity: 0;
-  transform: translateY(-6px);
-  filter: blur(4px);
-}
-</style>

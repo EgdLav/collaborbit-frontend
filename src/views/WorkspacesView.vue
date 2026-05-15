@@ -29,6 +29,7 @@ getWorkspaces()
           <input
             class="input h-9 w-[240px] px-3 py-0 text-sm"
             type="search"
+            autocomplete="off"
             placeholder="Search workspace..."
             aria-label="Search workspaces"
             v-model="filters.search"
