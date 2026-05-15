@@ -170,6 +170,11 @@ async function loadMore() {
   loading.value = false
 }
 
+function formatTime(dateStr: string | null | undefined): string {
+  if (!dateStr) return ''
+  return new Date(dateStr).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })
+}
+
 onMounted(async () => {
   if (route.params.user_id) {
     chat.value = (
@@ -268,7 +273,7 @@ onBeforeUnmount(() => {
                 <span class="text-xs font-medium text-[color:var(--text-0)]">
                   {{ message?.user?.id == auth?.id ? 'You' : message?.user?.first_name }}
                 </span>
-                <span class="timestamp">{{ message?.time }}</span>
+                <span class="timestamp">{{ formatTime(message?.created_at) }}</span>
               </div>
 
               <div

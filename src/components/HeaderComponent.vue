@@ -37,15 +37,11 @@ function closeMobileNav() {
 
         <!-- Logo -->
         <router-link
-          class="logo-link flex items-center gap-2.5 flex-shrink-0"
+          class="logo-link flex items-center gap-2 flex-shrink-0"
           to="/workspaces"
           @click="closeMobileNav"
         >
-          <span
-            class="inline-flex h-7 w-7 items-center justify-center rounded-lg bg-[color:var(--accent-dim)] border border-[color:var(--accent-border)] text-[color:var(--accent)] font-semibold text-xs"
-          >
-            CO
-          </span>
+          <img src="/logo.svg" alt="CollabOrbit" class="h-7 w-7" />
           <span class="text-sm font-semibold text-[color:var(--text-0)] tracking-tight">
             CollabOrbit
           </span>
