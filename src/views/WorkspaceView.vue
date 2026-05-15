@@ -89,6 +89,20 @@ async function onDrop(targetCategory: any) {
 }
 
 getWorkspace()
+
+function formatDate(d: string | null) {
+  if (!d) return '—'
+  return new Date(d).toLocaleDateString('en-GB', {
+    day: '2-digit',
+    month: 'short',
+    year: 'numeric',
+  })
+}
+
+function isOverdue(d: string | null) {
+  if (!d) return false
+  return new Date(d) < new Date()
+}
 </script>
 
 <template>
@@ -176,7 +190,10 @@ getWorkspace()
                 </div>
                 <p class="mt-1 text-xs text-[color:var(--text-2)] line-clamp-1">{{ task.description }}</p>
                 <p class="mt-2 text-xs text-[color:var(--text-2)]">
-                  {{ task.executor?.first_name }} · {{ task.due_date }}
+                  {{ task.executor?.first_name }} ·
+                  <span :class="isOverdue(task.due_date) ? 'text-[color:var(--danger)]' : ''">
+                    {{ formatDate(task.due_date) }}{{ isOverdue(task.due_date) ? ' ⚠' : '' }}
+                  </span>
                 </p>
               </router-link>
               <article
