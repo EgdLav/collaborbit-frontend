@@ -65,17 +65,13 @@ onMounted(() =>
       <p class="prompt"><b>task</b> / create</p>
       <h1 class="mt-1 mb-3 text-lg font-semibold">Create Task</h1>
       <div class="mb-5 flex items-center gap-3">
-        <div
-          class="flex items-center gap-2 rounded-full border border-[color:rgb(var(--accent-rgb)/0.28)] bg-[color:rgb(var(--accent-rgb)/0.06)] px-3 py-1.5"
-        >
-          <span class="text-xs text-[color:rgb(var(--accent-rgb)/0.8)]">WORKSPACE:</span>
+        <div class="flex items-center gap-2 rounded-full border border-[color:var(--accent-border)] bg-[color:var(--accent-dim)] px-3 py-1.5">
+          <span class="text-xs text-[color:var(--accent)]">WORKSPACE</span>
           <span class="text-sm font-medium text-[color:var(--text-0)]">{{ workspace?.name }}</span>
         </div>
         <span class="text-xs text-[color:var(--text-2)]">→</span>
-        <div
-          class="flex items-center gap-2 rounded-full border border-[color:rgb(var(--accent-rgb)/0.28)] bg-[color:rgb(var(--accent-rgb)/0.06)] px-3 py-1.5"
-        >
-          <span class="text-xs text-[color:rgb(var(--accent-rgb)/0.8)]">CATEGORY:</span>
+        <div class="flex items-center gap-2 rounded-full border border-[color:var(--accent-border)] bg-[color:var(--accent-dim)] px-3 py-1.5">
+          <span class="text-xs text-[color:var(--accent)]">CATEGORY</span>
           <span class="text-sm font-medium text-[color:var(--text-0)]">{{ category?.name }}</span>
         </div>
       </div>

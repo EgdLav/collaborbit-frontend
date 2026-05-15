@@ -131,7 +131,7 @@ function isOverdue(d: string | null) {
         </div>
         <div class="mt-3 space-y-2">
           <article
-            class="rounded-[10px] border border-[color:var(--border)] bg-[rgba(255,255,255,0.02)] px-3 py-2"
+            class="rounded-lg border border-[color:var(--border)] bg-[color:var(--bg-2)] px-3 py-2"
             v-for="member in workspace?.members"
             :key="member?.id"
           >
@@ -148,17 +148,17 @@ function isOverdue(d: string | null) {
         <div class="grid grid-cols-1 gap-4 md:grid-cols-3">
           <section
             :class="[
-              'rounded-[10px] border border-dashed transition-all duration-150',
+              'rounded-xl border transition-all duration-150',
               isDragging && draggedTask?.fromCategory?.id !== category.id
-                ? 'border-[rgb(var(--accent-rgb)/0.5)] bg-[rgb(var(--accent-rgb)/0.05)] scale-[1.01]'
-                : 'border-[color:var(--border)] bg-[rgba(255,255,255,0.02)]',
+                ? 'border-[rgba(16,185,129,0.4)] bg-[rgba(16,185,129,0.04)] scale-[1.01]'
+                : 'border-[color:var(--border)] bg-[color:var(--bg-1)]',
             ]"
             v-for="category in workspace?.categories"
             :key="category?.id"
             @dragover.prevent
             @drop="onDrop(category)"
           >
-            <header class="border-b border-dashed border-[color:var(--border)] px-3 py-3">
+            <header class="border-b border-[color:var(--border)] px-3 py-3">
               <p class="text-sm font-semibold">
                 {{ category.name }}
                 <span class="text-xs text-[color:var(--text-2)]">{{ category.tasks.length }}</span>
@@ -167,7 +167,7 @@ function isOverdue(d: string | null) {
             <div class="space-y-2 p-3">
               <router-link
                 :to="'/workspace/' + workspace?.id + '/category/' + category.id + '/task/' + task.id"
-                class="task-card rounded-[10px] border block card jump border-dashed border-[color:var(--border)] bg-[rgba(0,0,0,0.18)] px-3 py-2"
+                class="task-card block"
                 v-for="task in category?.tasks"
                 :key="task?.id"
                 draggable="true"
@@ -196,23 +196,20 @@ function isOverdue(d: string | null) {
                   </span>
                 </p>
               </router-link>
-              <article
-                class="rounded-[10px] border border-dashed border-[color:var(--border)] bg-[rgba(0,0,0,0.18)]"
-              >
+              <div class="rounded-lg border border-dashed border-[color:var(--border)]">
                 <router-link
                   :to="'/create-task/' + workspace?.id + '/' + category?.id"
-                  class="btn btn-primary w-full text-center px-3 py-2"
-                >Add task</router-link
-                >
-              </article>
+                  class="btn btn-ghost w-full text-center px-3 py-2 text-sm"
+                >+ Add task</router-link>
+              </div>
             </div>
           </section>
           <button
             v-if="workspace?.is_owner"
-            class="rounded-[10px] btn btn-primary font-semibold border border-dashed border-[color:rgb(var(--accent-rgb)/0.28)] bg-[color:rgb(var(--accent-rgb)/0.06)]"
+            class="btn btn-primary rounded-xl border-dashed min-h-[120px] text-sm font-medium"
             @click="showModal = true"
           >
-            Add category
+            + Add category
           </button>
         </div>
       </section>

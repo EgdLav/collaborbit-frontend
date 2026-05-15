@@ -7,19 +7,17 @@ import { useRoute, useRouter } from 'vue-router'
 
 const auth = useAuthStore()
 
-const token = computed(() => auth.token)
+const token  = computed(() => auth.token)
 const avatar = computed(() => auth.avatar)
 
-const route = useRoute()
+const route  = useRoute()
 const router = useRouter()
 
-const showMenu = ref(false)
-const menuRef = ref(null)
+const showMenu      = ref(false)
+const menuRef       = ref(null)
 const showMobileNav = ref(false)
 
-onClickOutside(menuRef, () => {
-  showMenu.value = false
-})
+onClickOutside(menuRef, () => { showMenu.value = false })
 
 async function logout() {
   await $fetch('/logout', 'post')
@@ -34,54 +32,61 @@ function closeMobileNav() {
 
 <template>
   <header class="navbar">
-    <div class="mx-auto max-w-6xl px-4 py-3">
-      <div class="flex items-center justify-between gap-4">
+    <div class="mx-auto max-w-6xl px-4">
+      <div class="flex h-14 items-center justify-between gap-4">
 
-        <!-- LOGO -->
-        <router-link class="logo-link flex items-center gap-2" to="/workspaces" @click="closeMobileNav">
+        <!-- Logo -->
+        <router-link
+          class="logo-link flex items-center gap-2.5 flex-shrink-0"
+          to="/workspaces"
+          @click="closeMobileNav"
+        >
           <span
-            class="inline-flex h-8 w-8 items-center justify-center rounded-[10px] border border-[color:var(--border)] bg-[color:var(--panel)] font-mono text-xs"
+            class="inline-flex h-7 w-7 items-center justify-center rounded-lg bg-[color:var(--accent-dim)] border border-[color:var(--accent-border)] text-[color:var(--accent)] font-semibold text-xs"
           >
             CO
           </span>
-          <span class="text-sm font-semibold tracking-wide">CollabOrbit</span>
+          <span class="text-sm font-semibold text-[color:var(--text-0)] tracking-tight">
+            CollabOrbit
+          </span>
         </router-link>
 
-        <!-- DESKTOP NAV -->
-        <nav class="hidden items-center gap-3 text-sm sm:flex" v-if="token">
-          <router-link class="link" to="/workspaces">Workspaces</router-link>
-          <router-link class="link" to="/invites">Invites</router-link>
-          <router-link class="link" to="/chats">Chats</router-link>
-          <router-link class="link" to="/find-coworkers">Find coworkers</router-link>
+        <!-- Desktop nav -->
+        <nav v-if="token" class="hidden sm:flex items-center gap-1">
+          <router-link class="nav-link" to="/workspaces">Workspaces</router-link>
+          <router-link class="nav-link" to="/invites">Invites</router-link>
+          <router-link class="nav-link" to="/chats">Chats</router-link>
+          <router-link class="nav-link" to="/find-coworkers">Find coworkers</router-link>
         </nav>
 
-        <!-- RIGHT -->
+        <!-- Right side -->
         <div class="flex items-center gap-2">
 
-          <!-- NOT AUTH -->
+          <!-- Unauthenticated -->
           <template v-if="!token">
             <router-link
-              class="btn"
-              :class="route.path === '/login' ? 'btn-primary' : 'btn-ghost'"
+              class="btn btn-ghost text-sm"
+              :class="{ 'btn-primary': route.path === '/login' }"
               to="/login"
             >Login</router-link>
             <router-link
-              class="btn"
-              :class="route.path === '/register' ? 'btn-primary' : 'btn-ghost'"
+              class="btn btn-primary text-sm"
+              :class="{ 'btn-ghost': route.path !== '/register' }"
               to="/register"
             >Register</router-link>
           </template>
 
-          <!-- AUTH -->
+          <!-- Authenticated -->
           <template v-else>
-            <!-- hamburger — mobile only -->
+
+            <!-- Hamburger (mobile) -->
             <button
-              class="btn btn-ghost h-9 w-9 p-0 sm:hidden"
+              class="btn btn-ghost h-8 w-8 p-0 sm:hidden"
               type="button"
               :aria-label="showMobileNav ? 'Close menu' : 'Open menu'"
               @click="showMobileNav = !showMobileNav"
             >
-              <span class="flex flex-col gap-[5px] items-center justify-center w-4">
+              <span class="flex flex-col gap-[5px] items-center justify-center w-[14px]">
                 <span
                   class="block h-px w-full bg-[color:var(--text-1)] transition-all duration-200"
                   :class="showMobileNav ? 'rotate-45 translate-y-[6px]' : ''"
@@ -97,63 +102,58 @@ function closeMobileNav() {
               </span>
             </button>
 
-            <!-- avatar + dropdown -->
+            <!-- Avatar + dropdown -->
             <div class="relative" ref="menuRef">
-              <img
+              <button
+                class="flex h-8 w-8 items-center justify-center rounded-lg border border-[color:var(--border)] overflow-hidden hover:border-[color:var(--border-strong)] transition-colors duration-150 focus-visible:outline-none"
+                type="button"
+                :aria-label="showMenu ? 'Close account menu' : 'Open account menu'"
                 @click="showMenu = !showMenu"
-                :src="avatar || 'https://i.pravatar.cc/100'"
-                alt="Avatar"
-                class="inline-flex h-9 w-9 flex-none cursor-pointer items-center justify-center rounded-[10px] border border-[color:var(--border)] bg-[rgba(255,255,255,0.03)] object-cover"
-              />
+              >
+                <img
+                  :src="avatar || 'https://i.pravatar.cc/100'"
+                  alt="Avatar"
+                  class="h-full w-full object-cover"
+                />
+              </button>
+
               <transition name="fade">
                 <div v-if="showMenu" class="menu">
-                  <router-link to="/my-profile" class="menu-item text-center" @click="showMenu = false">
+                  <router-link
+                    to="/my-profile"
+                    class="menu-item"
+                    @click="showMenu = false"
+                  >
                     Profile
                   </router-link>
-                  <div class="divider mt-2 mb-2"></div>
-                  <button @click="logout" class="menu-item danger w-full text-center">Logout</button>
+                  <div class="divider my-1"></div>
+                  <button
+                    class="menu-item danger"
+                    @click="logout"
+                  >
+                    Sign out
+                  </button>
                 </div>
               </transition>
             </div>
+
           </template>
         </div>
       </div>
 
-      <!-- MOBILE NAV DRAWER -->
+      <!-- Mobile nav drawer -->
       <transition name="mobile-nav">
         <nav
           v-if="token && showMobileNav"
-          class="mt-3 flex flex-col gap-1 border-t border-[color:var(--border)] pt-3 sm:hidden"
+          class="flex flex-col gap-0.5 border-t border-[color:var(--border)] py-2 sm:hidden"
         >
-          <router-link
-            class="menu-item"
-            to="/workspaces"
-            @click="closeMobileNav"
-          >Workspaces</router-link>
-          <router-link
-            class="menu-item"
-            to="/invites"
-            @click="closeMobileNav"
-          >Invites</router-link>
-          <router-link
-            class="menu-item"
-            to="/chats"
-            @click="closeMobileNav"
-          >Chats</router-link>
-          <router-link
-            class="menu-item"
-            to="/find-coworkers"
-            @click="closeMobileNav"
-          >Find coworkers</router-link>
-          <router-link
-            class="menu-item"
-            to="/tasks"
-            @click="closeMobileNav"
-          >Tasks</router-link>
+          <router-link class="menu-item" to="/workspaces"     @click="closeMobileNav">Workspaces</router-link>
+          <router-link class="menu-item" to="/invites"        @click="closeMobileNav">Invites</router-link>
+          <router-link class="menu-item" to="/chats"          @click="closeMobileNav">Chats</router-link>
+          <router-link class="menu-item" to="/find-coworkers" @click="closeMobileNav">Find coworkers</router-link>
+          <router-link class="menu-item" to="/tasks"          @click="closeMobileNav">Tasks</router-link>
         </nav>
       </transition>
     </div>
   </header>
 </template>
-
-

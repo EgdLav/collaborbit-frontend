@@ -4,14 +4,14 @@ import HeaderComponent from '@/components/HeaderComponent.vue'
 </script>
 
 <template>
-  <Suspense
-    ><RouterView v-slot="{ Component }">
-      <HeaderComponent></HeaderComponent>
-      <Transition mode="out-in" name="page">
-        <component :is="Component"></component>
-      </Transition>
-    </RouterView>
-  </Suspense>
+  <div class="app-shell">
+    <HeaderComponent />
+    <Suspense>
+      <RouterView v-slot="{ Component }">
+        <Transition mode="out-in" name="page">
+          <component :is="Component" />
+        </Transition>
+      </RouterView>
+    </Suspense>
+  </div>
 </template>
-
-

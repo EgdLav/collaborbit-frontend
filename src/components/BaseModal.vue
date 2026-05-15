@@ -1,5 +1,4 @@
 <script setup lang="ts">
-
 const props = defineProps<{
   modelValue: boolean
 }>()
@@ -15,14 +14,13 @@ function close() {
   <transition name="modal">
     <div
       v-if="modelValue"
-      class="fixed inset-0 z-50 flex items-center justify-center bg-black/50"
+      class="fixed inset-0 z-50 flex items-center justify-center px-4"
+      style="background: rgba(0,0,0,0.6); backdrop-filter: blur(4px);"
       @click.self="close"
     >
-      <div class="card w-full max-w-md p-5 modal">
+      <div class="modal w-full p-6">
         <slot />
       </div>
     </div>
   </transition>
 </template>
-
-
