@@ -71,11 +71,8 @@ function onScroll() {
   const el = messagesContainer.value
   if (!el) return
 
-  console.log(el.scrollTop)
-
   if (el.scrollTop < 100 && !loading.value && hasMore.value) {
     loadMore()
-    console.log(el.scrollTop, 'sending...')
   }
 }
 
@@ -170,7 +167,6 @@ async function loadMore() {
   })
 
   hasMore.value = res.data.has_more
-  console.log(res.data.has_more)
   loading.value = false
 }
 
