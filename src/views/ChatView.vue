@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import {ref, nextTick, onMounted, onBeforeUnmount} from 'vue'
-import {$fetch} from '@/fetch/fetch.ts'
-import {useAuthStore} from '@/stores/authStore.ts'
-import {useRoute, useRouter} from 'vue-router'
-import {echo} from '@/plugins/echo'
+import { ref, nextTick, onMounted, onBeforeUnmount } from 'vue'
+import { $fetch } from '@/fetch/fetch.ts'
+import { useAuthStore } from '@/stores/authStore.ts'
+import { useRoute, useRouter } from 'vue-router'
+import { echo } from '@/plugins/echo'
 
 const auth = useAuthStore()
 const router = useRouter()
@@ -100,15 +100,11 @@ async function sendMessage() {
 
   await scrollToBottom(true)
 
-  const res = await $fetch(
-    `/chats/${chat.value.id}/messages`,
-    'post',
-    {body: content}
-  )
+  const res = await $fetch(`/chats/${chat.value.id}/messages`, 'post', { body: content })
 
   if (!res.error) {
     // replace optimistic message
-    const index = messages.value.findIndex(m => m.temp_id === tempId)
+    const index = messages.value.findIndex((m) => m.temp_id === tempId)
 
     if (index !== -1) {
       messages.value[index] = {
@@ -117,19 +113,15 @@ async function sendMessage() {
       }
     }
   }
-
 }
 
 function connectWebSocket(chatId: number) {
   channel = echo.private(`chat.${chatId}`)
-
-  channel.listen('MessageSent', (e: any) => {
+  channel.listen('.MessageSent', (e: any) => {
     if (e?.message?.user?.id == auth.id) {
       return
     }
-    const exists = messages.value.some(
-      m => m.id == e.message.id
-    )
+    const exists = messages.value.some((m) => m.id == e.message.id)
 
     if (!exists) {
       messages.value.push(e.message)
@@ -145,14 +137,10 @@ async function loadMore() {
   const oldest = messages.value[0]
   const oldHeight = messagesContainer.value.scrollHeight
 
-  const res = await $fetch(
-    `/chats/${chat.value.id}/messages`,
-    'get',
-    {
-      before_id: oldest?.id,
-      limit: '30',
-    }
-  )
+  const res = await $fetch(`/chats/${chat.value.id}/messages`, 'get', {
+    before_id: oldest?.id,
+    limit: '30',
+  })
 
   const newMessages = res.data.messages.reverse()
 
@@ -162,8 +150,7 @@ async function loadMore() {
   requestAnimationFrame(() => {
     const newHeight = messagesContainer.value.scrollHeight
 
-    messagesContainer.value.scrollTop =
-      newHeight - oldHeight
+    messagesContainer.value.scrollTop = newHeight - oldHeight
   })
 
   hasMore.value = res.data.has_more
@@ -177,15 +164,11 @@ function formatTime(dateStr: string | null | undefined): string {
 
 onMounted(async () => {
   if (route.params.user_id) {
-    chat.value = (
-      await $fetch(`/chats/private/${route.params.user_id}`, 'post')
-    )?.data?.chat
+    chat.value = (await $fetch(`/chats/private/${route.params.user_id}`, 'post'))?.data?.chat
   }
 
   if (route.params.workspace_id) {
-    chat.value = (
-      await $fetch(`/workspaces/${route.params.workspace_id}/chat`, 'get')
-    )?.data?.chat
+    chat.value = (await $fetch(`/workspaces/${route.params.workspace_id}/chat`, 'get'))?.data?.chat
   }
 
   messages.value = (
@@ -200,51 +183,39 @@ onMounted(async () => {
 })
 onBeforeUnmount(() => {
   if (channel) {
-    echo.leave(`private-chat.${chat.value.id}`)
+    echo.leave(`chat.${chat.value.id}`)
   }
 })
+
 </script>
 
 <template>
   <main class="chat-page">
     <div class="chat-card">
-
       <!-- HEADER -->
       <div class="chat-header">
-        <button
-          @click="back()"
-          class="btn btn-ghost h-9 px-3 py-0 text-sm"
-        >
-          ← Back
-        </button>
+        <button @click="back()" class="btn btn-ghost h-9 px-3 py-0 text-sm">← Back</button>
 
         <div class="flex-1">
-          <p class="prompt"><b>chat</b> /
+          <p class="prompt">
+            <b>chat</b> /
             <span v-if="chat?.type === 'private'">
               {{ (chat.other_user?.first_name + ' ' + (chat.other_user?.last_name ?? '')).trim() }}
             </span>
-            <span v-else-if="chat?.type === 'workspace'">
-              # {{ chat.workspace?.name }}
-            </span>
+            <span v-else-if="chat?.type === 'workspace'"> # {{ chat.workspace?.name }} </span>
           </p>
           <p class="mt-0.5 text-xs text-[color:var(--text-2)]">
             {{ chat?.type === 'private' ? '@ private' : '# workspace' }}
           </p>
         </div>
 
-        <span class="kbd text-xs">
-          {{ chat?.messages_count }} messages
-        </span>
+        <span class="kbd text-xs"> {{ chat?.messages_count }} messages </span>
       </div>
 
       <!-- BODY -->
       <div class="chat-body">
-
         <!-- MESSAGES -->
-        <div
-          ref="messagesContainer"
-          class="messages-container"
-        >
+        <div ref="messagesContainer" class="messages-container">
           <div
             v-if="messages.length === 0"
             class="flex h-full flex-col items-center justify-center gap-2"
@@ -268,8 +239,10 @@ onBeforeUnmount(() => {
 
             <!-- content -->
             <div class="message-content" :class="message?.user?.id == auth?.id ? 'items-end' : ''">
-              <div class="flex items-baseline gap-2"
-                   :class="message?.user?.id == auth?.id ? 'flex-row-reverse' : ''">
+              <div
+                class="flex items-baseline gap-2"
+                :class="message?.user?.id == auth?.id ? 'flex-row-reverse' : ''"
+              >
                 <span class="text-xs font-medium text-[color:var(--text-0)]">
                   {{ message?.user?.id == auth?.id ? 'You' : message?.user?.first_name }}
                 </span>
@@ -281,7 +254,8 @@ onBeforeUnmount(() => {
                 :class="message?.user?.id == auth?.id ? 'message-bubble--me' : ''"
               >
                 <p
-                  class="text-sm text-[color:var(--text-0)] whitespace-pre-wrap break-words leading-[1.45]">
+                  class="text-sm text-[color:var(--text-0)] whitespace-pre-wrap break-words leading-[1.45]"
+                >
                   {{ message?.body }}
                 </p>
               </div>
@@ -297,10 +271,7 @@ onBeforeUnmount(() => {
         </div>
 
         <!-- INPUT -->
-        <form
-          class="chat-input-wrapper"
-          @submit.prevent="sendMessage"
-        >
+        <form class="chat-input-wrapper" @submit.prevent="sendMessage">
           <textarea
             ref="textareaRef"
             v-model="messageInput"
@@ -320,9 +291,6 @@ onBeforeUnmount(() => {
           </button>
         </form>
       </div>
-
     </div>
   </main>
 </template>
-
-
