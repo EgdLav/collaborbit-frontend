@@ -77,7 +77,7 @@ async function onDrop(targetCategory: any) {
   const response = await $fetch(
     `/workspaces/${route.params.id}/categories/${fromCategory.id}/tasks/${task.id}/category`,
     'PATCH',
-    { category_id : targetCategory.id}
+    { category_id: targetCategory.id },
   )
 
   if (!response.error) {
@@ -110,7 +110,9 @@ function isOverdue(d: string | null) {
     <section class="card p-4">
       <div class="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
         <div>
-          <p class="prompt"><b>workspace</b> / orbit-product</p>
+          <div class="flex justify-between">
+            <p class="prompt"><b>workspace</b> / {{ workspace.name }}</p>
+          </div>
           <h1 class="mt-1 text-lg font-semibold">{{ workspace.name }}</h1>
           <p class="mt-1 text-sm text-[color:var(--text-1)]">
             {{ workspace.description }}
@@ -120,6 +122,11 @@ function isOverdue(d: string | null) {
           <span class="kbd justify-center">{{ workspace?.members?.length ?? 0 }} coworkers</span>
           <span class="kbd justify-center">{{ workspace?.tasks?.length ?? 0 }} tasks</span>
         </div>
+        <div class="flex">
+          <button class="btn btn-ghost h-9 px-3 py-0 text-sm" type="button" @click="back">
+            ← Back
+          </button>
+        </div>
       </div>
     </section>
 
@@ -127,7 +134,12 @@ function isOverdue(d: string | null) {
       <aside class="card p-4 xl:col-span-1">
         <div class="flex items-center justify-between">
           <h2 class="text-sm font-semibold">Coworkers</h2>
-          <router-link class="btn btn-ghost h-8 px-2 py-0 text-xs" type="button" to="/find-coworkers">Invite</router-link>
+          <router-link
+            class="btn btn-ghost h-8 px-2 py-0 text-xs"
+            type="button"
+            to="/find-coworkers"
+            >Invite</router-link
+          >
         </div>
         <div class="mt-3 space-y-2">
           <article
@@ -166,7 +178,9 @@ function isOverdue(d: string | null) {
             </header>
             <div class="space-y-2 p-3">
               <router-link
-                :to="'/workspace/' + workspace?.id + '/category/' + category.id + '/task/' + task.id"
+                :to="
+                  '/workspace/' + workspace?.id + '/category/' + category.id + '/task/' + task.id
+                "
                 class="task-card block"
                 v-for="task in category?.tasks"
                 :key="task?.id"
@@ -181,14 +195,18 @@ function isOverdue(d: string | null) {
                     <span
                       v-if="String(task.creator.id) === String(auth.id)"
                       class="task-badge task-badge--creator"
-                    >CREATOR</span>
+                      >CREATOR</span
+                    >
                     <span
                       v-if="String(task.executor.id) === String(auth.id)"
                       class="task-badge task-badge--executor"
-                    >EXECUTOR</span>
+                      >EXECUTOR</span
+                    >
                   </div>
                 </div>
-                <p class="mt-1 text-xs text-[color:var(--text-2)] line-clamp-1">{{ task.description }}</p>
+                <p class="mt-1 text-xs text-[color:var(--text-2)] line-clamp-1">
+                  {{ task.description }}
+                </p>
                 <p class="mt-2 text-xs text-[color:var(--text-2)]">
                   {{ task.executor?.first_name }} ·
                   <span :class="isOverdue(task.due_date) ? 'text-[color:var(--danger)]' : ''">
@@ -200,7 +218,8 @@ function isOverdue(d: string | null) {
                 <router-link
                   :to="'/create-task/' + workspace?.id + '/' + category?.id"
                   class="btn btn-ghost w-full text-center px-3 py-2 text-sm"
-                >+ Add task</router-link>
+                  >+ Add task</router-link
+                >
               </div>
             </div>
           </section>
@@ -251,5 +270,3 @@ function isOverdue(d: string | null) {
     </section>
   </main>
 </template>
-
-

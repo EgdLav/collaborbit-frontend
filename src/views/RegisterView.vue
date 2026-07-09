@@ -60,9 +60,9 @@ function onAvatarChange(event: Event) {
   preview.value = URL.createObjectURL(file)
 }
 
-onMounted(() =>{
+onMounted(() => {
   document.querySelectorAll('select').forEach((e) => (e.onchange = () => e.setCustomValidity('')))
-    document.querySelectorAll('input').forEach((e) => (e.onchange = () => e.setCustomValidity('')))
+  document.querySelectorAll('input').forEach((e) => (e.onchange = () => e.setCustomValidity('')))
 })
 </script>
 
@@ -152,7 +152,7 @@ onMounted(() =>{
             </label>
             <select class="input" id="department" name="department">
               <option value="">Select department</option>
-              <option v-for="dep in departments" :key="dep" :value="dep">{{dep}}</option>
+              <option v-for="dep in departments" :key="dep" :value="dep">{{ dep }}</option>
             </select>
           </div>
 
@@ -161,12 +161,13 @@ onMounted(() =>{
               class="mt-1 h-4 w-4 rounded border border-[color:var(--border)] bg-[rgba(255,255,255,0.03)]"
               type="checkbox"
               name="terms"
+              required
             />
             <p class="text-sm text-[color:var(--text-1)]">
               Согласен с
-              <a class="link" href="#">terms</a>
+              <a class="link" href="/documents/terms.pdf" target="_blank">terms</a>
               и
-              <a class="link" href="#">privacy</a>.
+              <a class="link" href="/documents/privacy.pdf" target="_blank">privacy</a>.
             </p>
           </div>
 

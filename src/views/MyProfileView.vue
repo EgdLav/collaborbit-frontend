@@ -90,16 +90,11 @@ getProfile()
 
 <template>
   <main class="mx-auto max-w-5xl px-4 py-6">
-
     <!-- HEADER -->
     <section class="card p-4">
-      <p class="prompt">
-        <b>user</b> / settings
-      </p>
+      <p class="prompt"><b>user</b> / settings</p>
 
-      <h1 class="mt-1 text-lg font-semibold">
-        Identity Control Panel
-      </h1>
+      <h1 class="mt-1 text-lg font-semibold">Identity Control Panel</h1>
 
       <p class="mt-1 text-sm text-[color:var(--text-1)]">
         Manage your digital existence before it manages you.
@@ -107,51 +102,50 @@ getProfile()
     </section>
 
     <form @submit.prevent="save">
-      <input type="hidden" name="_method" value="patch">
+      <input type="hidden" name="_method" value="patch" />
       <section class="mt-4 space-y-4">
-
         <!-- PROFILE -->
         <article class="card p-4">
           <h2 class="text-sm font-semibold">Profile</h2>
-
+          <div v-if="preview" class="flex justify-center">
+            <img :src="preview" alt="Avatar preview" class="h-24 w-24 rounded-full object-cover" />
+          </div>
           <div class="mt-3 grid grid-cols-1 gap-3 sm:grid-cols-2">
             <label>
               <span class="text-sm text-[color:var(--text-1)]">First name</span>
-              <input class="input mt-1"
-                     name="first_name"
-                     v-model="user.first_name"
-                     placeholder="John" />
+              <input
+                class="input mt-1"
+                name="first_name"
+                v-model="user.first_name"
+                placeholder="John"
+              />
             </label>
 
             <label>
               <span class="text-sm text-[color:var(--text-1)]">Last name</span>
-              <input class="input mt-1"
-                     name="last_name"
-                     v-model="user.last_name"
-                     placeholder="Kirov" />
+              <input
+                class="input mt-1"
+                name="last_name"
+                v-model="user.last_name"
+                placeholder="Kirov"
+              />
             </label>
           </div>
 
           <label class="mt-3 block">
             <span class="text-sm text-[color:var(--text-1)]">Email</span>
-            <input class="input mt-1"
-                   name="email"
-                   v-model="user.email"
-                   placeholder="collab@orbit.com" />
+            <input
+              class="input mt-1"
+              name="email"
+              v-model="user.email"
+              placeholder="collab@orbit.com"
+            />
           </label>
 
           <label class="mt-3 block">
             <span class="text-sm text-[color:var(--text-1)]">Department</span>
-            <select
-              class="input mt-1"
-              name="department"
-              v-model="user.department"
-            >
-              <option
-                v-for="dep in departments"
-                :key="dep"
-                :value="dep"
-              >
+            <select class="input mt-1" name="department" v-model="user.department">
+              <option v-for="dep in departments" :key="dep" :value="dep">
                 {{ dep }}
               </option>
             </select>
@@ -159,10 +153,12 @@ getProfile()
 
           <label class="mt-3 block">
             <span class="text-sm text-[color:var(--text-1)]">Bio</span>
-            <textarea class="input mt-1 min-h-[100px]"
-                      name="bio"
-                      v-model="user.bio"
-                      placeholder="Write something impressive"></textarea>
+            <textarea
+              class="input mt-1 min-h-[100px]"
+              name="bio"
+              v-model="user.bio"
+              placeholder="Write something impressive"
+            ></textarea>
           </label>
           <div>
             <label class="mb-2 block text-sm text-[color:var(--text-1)]" for="avatar">Avatar</label>
@@ -175,13 +171,6 @@ getProfile()
                 accept="image/*"
                 @change="onAvatarChange"
               />
-              <div v-if="preview" class="flex justify-center">
-                <img
-                  :src="preview"
-                  alt="Avatar preview"
-                  class="h-24 w-24 rounded-full object-cover"
-                />
-              </div>
             </div>
           </div>
         </article>
@@ -210,14 +199,9 @@ getProfile()
         <!-- ACTIONS (ONE LINE) -->
         <article class="card p-4">
           <div class="flex flex-wrap items-center gap-2">
+            <button class="btn btn-primary h-9 px-3 text-sm" type="submit">Save changes</button>
 
-            <button class="btn btn-primary h-9 px-3 text-sm" type="submit">
-              Save changes
-            </button>
-
-            <button class="btn h-9 px-3 text-sm" type="button" @click="back">
-              Back
-            </button>
+            <button class="btn h-9 px-3 text-sm" type="button" @click="back">Back</button>
 
             <!-- subtle danger button -->
             <button
@@ -227,22 +211,18 @@ getProfile()
             >
               Delete account
             </button>
-
           </div>
         </article>
-
       </section>
     </form>
 
     <!-- DELETE MODAL -->
     <BaseModal v-model="showDeleteModal">
-      <h2 class="text-sm font-semibold text-red-500">
-        Final decision
-      </h2>
+      <h2 class="text-sm font-semibold text-red-500">Final decision</h2>
 
       <p class="mt-2 text-sm text-[color:var(--text-1)]">
-        You are about to delete your account.
-        This removes everything: workspaces, tasks, memories, hopes.
+        You are about to delete your account. This removes everything: workspaces, tasks, memories,
+        hopes.
       </p>
 
       <p class="mt-1 text-xs text-[color:var(--text-2)]">
@@ -259,7 +239,6 @@ getProfile()
         </button>
       </div>
     </BaseModal>
-
   </main>
 </template>
 

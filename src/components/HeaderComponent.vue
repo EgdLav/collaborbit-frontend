@@ -38,7 +38,7 @@ function closeMobileNav() {
         <!-- Logo -->
         <router-link
           class="logo-link flex items-center gap-2 flex-shrink-0"
-          to="/workspaces"
+          to="/"
           @click="closeMobileNav"
         >
           <img src="/logo.svg" alt="CollabOrbit" class="h-7 w-7" />
@@ -77,23 +77,23 @@ function closeMobileNav() {
 
             <!-- Hamburger (mobile) -->
             <button
-              class="btn btn-ghost h-8 w-8 p-0 sm:hidden"
+              class="nav-burger btn btn-ghost h-8 w-8 p-0 sm:hidden"
               type="button"
               :aria-label="showMobileNav ? 'Close menu' : 'Open menu'"
               @click="showMobileNav = !showMobileNav"
             >
-              <span class="flex flex-col gap-[5px] items-center justify-center w-[14px]">
+              <span class="flex h-4 w-4 flex-col items-center justify-center gap-[4px]">
                 <span
-                  class="block h-px w-full bg-[color:var(--text-1)] transition-all duration-200"
-                  :class="showMobileNav ? 'rotate-45 translate-y-[6px]' : ''"
+                  class="nav-burger__line"
+                  :class="showMobileNav ? 'translate-y-[6px] rotate-45' : ''"
                 />
                 <span
-                  class="block h-px w-full bg-[color:var(--text-1)] transition-all duration-200"
-                  :class="showMobileNav ? 'opacity-0' : ''"
+                  class="nav-burger__line nav-burger__line--middle"
+                  :class="showMobileNav ? 'opacity-0 scale-x-0' : ''"
                 />
                 <span
-                  class="block h-px w-full bg-[color:var(--text-1)] transition-all duration-200"
-                  :class="showMobileNav ? '-rotate-45 -translate-y-[6px]' : ''"
+                  class="nav-burger__line"
+                  :class="showMobileNav ? '-translate-y-[6px] -rotate-45' : ''"
                 />
               </span>
             </button>

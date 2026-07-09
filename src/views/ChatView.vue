@@ -209,7 +209,7 @@ onBeforeUnmount(() => {
           </p>
         </div>
 
-        <span class="kbd text-xs"> {{ chat?.messages_count }} messages </span>
+        <span class="kbd text-xs"> {{ chat?.messages_count ?? 0 }} messages </span>
       </div>
 
       <!-- BODY -->

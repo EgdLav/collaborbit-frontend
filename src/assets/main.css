@@ -141,6 +141,32 @@ body {
   -webkit-backdrop-filter: blur(16px) saturate(1.4);
 }
 
+.nav-burger {
+  border: 1px solid var(--border);
+  background: transparent;
+  box-shadow: none;
+  transition: border-color var(--t) var(--ease), background var(--t) var(--ease), box-shadow var(--t) var(--ease);
+}
+
+.nav-burger:hover {
+  background: transparent;
+  border-color: var(--border-strong);
+  box-shadow: none;
+}
+
+.nav-burger__line {
+  display: block;
+  height: 2px;
+  width: 14px;
+  border-radius: 999px;
+  background: var(--accent);
+  transition: transform var(--t) var(--ease), opacity var(--t) var(--ease), background var(--t) var(--ease);
+}
+
+.nav-burger__line--middle {
+  transform-origin: center;
+}
+
 /* ─── Sidebar ────────────────────────────────────────────────────────────── */
 .sidebar {
   background: var(--bg-1);

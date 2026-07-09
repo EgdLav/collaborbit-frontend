@@ -375,10 +375,6 @@ getCoworkers()
                 class="inline-flex h-12 w-12 flex-none items-center justify-center rounded-[12px] border border-[color:var(--border)] bg-[rgba(255,255,255,0.03)] font-semibold text-sm text-[color:var(--text-1)]"
               />
             </span>
-            <span class="badge badge-todo h-fit">
-              <span class="badge-dot"></span>
-              Online
-            </span>
           </div>
           <h3 class="font-semibold text-sm">
             {{ coworker?.first_name }} {{ coworker?.last_name }}

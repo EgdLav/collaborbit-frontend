@@ -36,14 +36,13 @@ getWorkspaces()
             @change="getWorkspaces"
           />
           <router-link class="btn btn-primary h-9 px-3 py-0 text-sm" to="./workspace-create"
-          >Create workspace</router-link
+            >Create workspace</router-link
           >
         </div>
       </div>
     </section>
 
     <section class="mt-4 grid grid-cols-1 gap-4 lg:grid-cols-2">
-
       <div
         v-if="!workspaces?.length"
         class="card p-10 col-span-full flex flex-col items-center justify-center gap-2 text-center"
@@ -62,8 +61,8 @@ getWorkspaces()
             </p>
           </div>
           <span class="badge"
-          ><span class="badge-dot"></span
-          >{{ workspace?.is_owner == true ? 'Owner' : 'Member' }}</span
+            ><span class="badge-dot"></span
+            >{{ workspace?.is_owner == true ? 'Owner' : 'Member' }}</span
           >
         </div>
         <div class="mt-4 flex flex-wrap items-center gap-2 text-xs text-[color:var(--text-2)]">
@@ -72,13 +71,13 @@ getWorkspaces()
         </div>
         <div class="mt-4 flex items-center gap-2">
           <router-link class="btn h-9 px-3 py-0 text-sm" :to="'/workspace/' + workspace?.id"
-          >Open</router-link
+            >Open</router-link
           >
           <router-link
             v-if="workspace?.is_owner"
             class="btn btn-ghost h-9 px-3 py-0 text-sm"
             :to="'/workspace-settings/' + workspace?.id"
-          >Settings</router-link
+            >Settings</router-link
           >
         </div>
       </article>
