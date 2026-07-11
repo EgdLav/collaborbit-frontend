@@ -45,7 +45,7 @@ export async function $fetch(
   method = 'get',
   body: Record<string, string> | FormData | null = null,
 ) {
-  const url = new URL('http://127.0.0.1:8000/api' + path)
+  const url = new URL('http://localhost:80/api' + path)
 
   const auth = useAuthStore()
   let headers = {
