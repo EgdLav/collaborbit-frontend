@@ -102,4 +102,4 @@ npm run build
 
 Backend: github.com/EgdLav/collaborbit-backend
 
-[Backend](github.com/EgdLav/collaborbit-backend) | [Frontend](github.com/EgdLav/collaborbit-frontend) | [Live Demo](github.com/EgdLav/collaborbit-frontend)
+[Backend](https://github.com/EgdLav/collaborbit-backend) | [Frontend](https://github.com/EgdLav/collaborbit-frontend) | [Live Demo](https://github.com/EgdLav/collaborbit-frontend)
