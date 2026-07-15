@@ -7,13 +7,13 @@ export const echo = new Echo({
   broadcaster: 'reverb',
   key: import.meta.env.VITE_REVERB_APP_KEY,
 
-  wsHost: import.meta.env.VITE_REVERB_HOST ?? 'collaborbit.mooo.com',
+  wsHost: import.meta.env.VITE_REVERB_HOST ?? 'https://collaborbit.mooo.com',
   wsPort: 80,
 
   forceTLS: false,
   enabledTransports: ['ws', 'wss'],
 
-  authEndpoint: 'http://collaborbit.mooo.com/broadcasting/auth',
+  authEndpoint: 'https://collaborbit.mooo.com/broadcasting/auth',
 
   auth: {
     headers: {

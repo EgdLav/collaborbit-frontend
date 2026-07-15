@@ -45,7 +45,7 @@ export async function $fetch(
   method = 'get',
   body: Record<string, string> | FormData | null = null,
 ) {
-  const url = new URL('http://62.109.6.70/api' + path)
+  const url = new URL('https://collaborbit.mooo.com/api' + path)
 
   const auth = useAuthStore()
   let headers = {
