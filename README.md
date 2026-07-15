@@ -100,6 +100,6 @@ npm run build
 
 ## Related Repository
 
-Backend: github.com/EgdLav/collaborbit-backend
+Backend: https://github.com/EgdLav/collaborbit-backend
 
 [Backend](https://github.com/EgdLav/collaborbit-backend) | [Frontend](https://github.com/EgdLav/collaborbit-frontend) | [Live Demo](https://github.com/EgdLav/collaborbit-frontend)

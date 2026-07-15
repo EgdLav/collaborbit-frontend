@@ -7,13 +7,13 @@ export const echo = new Echo({
   broadcaster: 'reverb',
   key: import.meta.env.VITE_REVERB_APP_KEY,
 
-  wsHost: import.meta.env.VITE_REVERB_HOST ?? 'localhost',
+  wsHost: import.meta.env.VITE_REVERB_HOST ?? '62.109.6.70',
   wsPort: 80,
 
   forceTLS: false,
   enabledTransports: ['ws', 'wss'],
 
-  authEndpoint: 'http://localhost:80/broadcasting/auth',
+  authEndpoint: 'http://62.109.6.70/broadcasting/auth',
 
   auth: {
     headers: {
