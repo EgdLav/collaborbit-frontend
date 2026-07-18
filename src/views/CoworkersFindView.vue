@@ -372,7 +372,7 @@ getCoworkers()
               <img
                 :src="coworker?.avatar"
                 alt=""
-                class="inline-flex h-12 w-12 flex-none items-center justify-center rounded-[12px] border border-[color:var(--border)] bg-[rgba(255,255,255,0.03)] font-semibold text-sm text-[color:var(--text-1)]"
+                class="inline-flex h-12 w-12 flex-none items-center justify-center rounded-[12px] border border-[color:var(--border)] bg-[rgba(255,255,255,0.03)] font-semibold text-sm text-[color:var(--text-1)] object-cover"
               />
             </span>
           </div>
